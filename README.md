@@ -24,7 +24,7 @@ Put your name against your row (edit this file in a pull request or ask the repo
 | 4 | Tableau (A): clean data, dashboards 1-2 | `04-tableau/` | Shredha (4 or 5, TBC) | Required |
 | 5 | Tableau (B): dashboards 3-4, Story, final .twbx | `04-tableau/` | _TBC_ | Required |
 | 6 | Strategy + impact (3 recommendations) | `05-strategy/` | Stefanie | Required |
-| 7 | "Grad Ready" app prototype | `06-app/` | _TBC_ | EXTRA |
+| 7 | "Grad Ready" app prototype | `06-app/` | Eryn | EXTRA |
 | 8 | Slides + coordination | `07-slides/` | _TBC_ | Required |
 
 If time runs short, drop in this order: posters, then the app, then the future-state journey curve. Never drop the Tableau Story, the VPC or the strategy.
