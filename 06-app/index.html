@@ -29,6 +29,9 @@
   --good: #5fd49a; --good-soft: #12301f; --warn: #f0c15a; --warn-soft: #352a0e; --risk: #ff8f85; --risk-soft: #3a1714;
   color-scheme: dark;
 }
+:root { --bezel: #1d2a35; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bezel: #04070a; } }
+:root[data-theme="dark"] { --bezel: #04070a; }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px; }
@@ -46,22 +49,22 @@ button { cursor: pointer; }
 .brand h1 { white-space: nowrap; }
 .brand-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
 .brand h1 { font-size: 22px; }
-.sample { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--warn); background: var(--warn-soft); padding: 3px 8px; border-radius: 99px; }
+.sample { font-size: 12.5px; font-weight: 600; color: var(--warn); background: var(--warn-soft); padding: 3px 8px; border-radius: 99px; }
 .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; max-width: 100%; }
-.seg button { border: 0; background: transparent; padding: 8px 14px; border-radius: 8px; font-weight: 500; color: var(--muted); }
+.seg button { border: 0; background: transparent; min-height: 40px; padding: 8px 14px; border-radius: 8px; font-weight: 500; color: var(--muted); }
 .seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
 
 .layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
 @media (min-width: 960px) { .layout { grid-template-columns: minmax(0, 1fr) 330px; } }
 
-.app { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; min-width: 0; }
-.app-head { padding: 18px 18px 0; display: grid; gap: 4px; }
+.app { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: clip; min-width: 0; display: flex; flex-direction: column; }
+.app-head { padding: 18px 18px 14px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); }
 .app-head .who { color: var(--muted); font-size: 13px; }
 .app-head h2 { font-size: 24px; }
-.tabs { display: flex; gap: 4px; padding: 14px 18px 0; border-bottom: 1px solid var(--line); }
-.tabs button { border: 0; background: none; padding: 10px 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; }
-.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-.body { padding: 18px; display: grid; gap: 18px; min-width: 0; }
+.tabs { display: flex; gap: 4px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--surface); position: sticky; bottom: 0; z-index: 5; }
+.tabs button { flex: 1; border: 0; background: none; min-height: 52px; border-radius: 12px; display: grid; justify-items: center; align-content: center; gap: 2px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.tabs button[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); }
+.body { padding: 18px; display: grid; gap: 18px; min-width: 0; align-content: start; flex: 1; }
 
 .banner { border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
 .banner h3 { font-size: 17px; }
@@ -70,11 +73,12 @@ button { cursor: pointer; }
 .banner.good { background: var(--good-soft); color: var(--good); }
 .banner p { color: var(--ink); }
 
-.sec-title { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.sec-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; }
+.sec-title span:last-child:not(:first-child) { font-weight: 400; font-size: 13px; color: var(--muted); }
 .list { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--surface); border-top: 1px solid var(--line); flex-wrap: wrap; }
 .row:first-child { border-top: 0; }
-.row .main { min-width: 0; flex: 1 1 200px; }
+.row .main { min-width: 0; flex: 1 1 140px; }
 .row .main b { display: block; font-weight: 600; }
 .row .main span { color: var(--muted); font-size: 13.5px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
@@ -87,7 +91,9 @@ button { cursor: pointer; }
 .progress { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin-top: 8px; }
 .progress i { display: block; height: 100%; background: var(--good); border-radius: 99px; }
 
-.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; padding: 9px 14px; border-radius: 9px; }
+.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; padding: 10px 16px; min-height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
+.btn:hover:not([disabled]) { filter: brightness(1.08); }
+.btn:active:not([disabled]) { transform: translateY(1px); }
 .btn.ghost { background: transparent; color: var(--accent); }
 .btn.quiet { background: var(--surface-2); border-color: var(--line); color: var(--ink); }
 .btn.danger { background: transparent; border-color: var(--risk); color: var(--risk); }
@@ -115,7 +121,7 @@ select, input[type="text"], textarea { background: var(--surface); border: 1px s
 .tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
 table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14px; }
 th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
-thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: var(--muted); font-weight: 600; }
 
 .notes { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
 .notes h2 { font-size: 18px; }
@@ -126,7 +132,20 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
 .demo { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--line); }
 .foot { color: var(--muted); font-size: 12.5px; max-width: 70ch; }
 .empty { color: var(--muted); padding: 14px; text-align: center; }
-@media (prefers-reduced-motion: no-preference) { .progress i { transition: width .3s; } }
+@media (min-width: 960px) {
+  .app.phone { width: 100%; max-width: 410px; margin: 0 auto; border: 9px solid var(--bezel); border-radius: 42px; overflow: hidden;
+    height: min(820px, calc(100vh - 120px)); min-height: 600px; box-shadow: 0 0 0 1px var(--line), 0 28px 60px rgba(8, 20, 28, .22); }
+  .app.phone .body { overflow-y: auto; }
+  .notes { position: sticky; top: 16px; }
+}
+.toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); z-index: 50; max-width: calc(100vw - 32px);
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 99px; font-weight: 500; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); }
+.banner .actions { margin-top: 6px; }
+@media (prefers-reduced-motion: no-preference) {
+  .progress i { transition: width .3s; }
+  .toast { animation: toast-in .2s ease-out; }
+  @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+}
 </style>
 
 <div class="shell">
@@ -141,7 +160,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
     <div class="seg" role="group" aria-label="Switch view">
       <button type="button" data-action="role" data-v="student" aria-pressed="true">Student</button>
       <button type="button" data-action="role" data-v="advisor" aria-pressed="false">Advisor</button>
-      <button type="button" data-action="role" data-v="mgmt" aria-pressed="false">SCIS management</button>
+      <button type="button" data-action="role" data-v="mgmt" aria-pressed="false">Management</button>
     </div>
   </header>
 
@@ -151,6 +170,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
   </div>
   <p class="foot">Prototype for the MCRA Week 13 presentation. Every student, employer and figure shown is sample data, not a real record. The real baseline comes from our survey of Year 4 students.</p>
   <div class="sr" id="live" aria-live="polite"></div>
+  <div class="toast" id="toast" aria-hidden="true" hidden></div>
 </div>
 
 <script>
@@ -270,12 +290,15 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
     } else {
       banner = '<div class="banner good"><h3>You are on track to graduate</h3><p>Audit confirmed and every requirement is done or in progress.</p></div>';
     }
+    var canAsk = missing && (!S.seat || S.seat.status === 'declined');
+    if (canAsk) {
+      banner = banner.replace(/<\/div>$/, '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request a reserved seat</button></div></div>');
+    }
     var seatBlock = '';
     if (missing) {
-      if (!S.seat || S.seat.status === 'declined') {
-        seatBlock = (S.seat && S.seat.status === 'declined' ? '<p>Your advisor asked to meet before reserving a seat.</p>' : '') +
-          '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request a reserved seat</button></div>';
-      } else {
+      if (S.seat && S.seat.status === 'declined') {
+        seatBlock = '<p>Your advisor asked to meet before reserving a seat. You can send a new request from the banner above.</p>';
+      } else if (!canAsk) {
         seatBlock = '<div class="card hot"><div><b>Seat request sent to your advisor</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + '</div>';
       }
     }
@@ -377,10 +400,13 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
     var who = S.role === 'student' ? 'Marcus Tan · Year 4 · Information Systems' : S.role === 'advisor' ? 'Academic advisor · Week 2 of Term 1' : 'SCIS management · sample cohort';
     var title = S.role === 'student' ? (S.tab === 'grad' ? 'Graduation' : 'Career') : S.role === 'advisor' ? 'Advisor inbox' : 'Programme health';
     var tabs = S.role === 'student'
-      ? '<div class="tabs" role="tablist"><button type="button" role="tab" data-action="tab" data-v="grad" aria-selected="' + (S.tab === 'grad') + '">Graduation</button><button type="button" role="tab" data-action="tab" data-v="career" aria-selected="' + (S.tab === 'career') + '">Career</button></div>'
-      : '<div style="border-bottom:1px solid var(--line);margin-top:14px"></div>';
+      ? '<div class="tabs" role="tablist" aria-label="Sections">' +
+        '<button type="button" role="tab" data-action="tab" data-v="grad" aria-selected="' + (S.tab === 'grad') + '"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5"/></svg>Graduation</button>' +
+        '<button type="button" role="tab" data-action="tab" data-v="career" aria-selected="' + (S.tab === 'career') + '"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>Career</button></div>'
+      : '';
     var body = S.role === 'student' ? (S.tab === 'grad' ? studentGrad() : studentCareer()) : S.role === 'advisor' ? advisorView() : mgmtView();
-    document.getElementById('app').innerHTML = '<div class="app-head"><span class="who">' + esc(who) + '</span><h2>' + esc(title) + '</h2></div>' + tabs + '<div class="body">' + body + '</div>';
+    document.getElementById('app').innerHTML = '<div class="app-head"><span class="who">' + esc(who) + '</span><h2>' + esc(title) + '</h2></div>' + '<div class="body">' + body + '</div>' + tabs;
+    document.getElementById('app').className = 'app' + (S.role === 'student' ? ' phone' : '');
 
     var N = NOTES[key];
     document.getElementById('notes').innerHTML = '<h2>' + esc(N.title) + '</h2>' +
@@ -402,7 +428,14 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
   }
   setInterval(tick, 1000);
 
-  function say(t) { document.getElementById('live').textContent = t; }
+  var toastTimer;
+  function say(t) {
+    document.getElementById('live').textContent = t;
+    var el = document.getElementById('toast');
+    el.textContent = t; el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.hidden = true; }, 2600);
+  }
   function reply(at) { S.replies.push((now() - at) / H); }
 
   document.addEventListener('click', function (e) {
@@ -412,7 +445,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
     if (a === 'role') { S.role = v; }
     else if (a === 'tab') { S.tab = v; }
     else if (a === 'seat-request') { S.seat = { at: now(), status: 'pending' }; say('Seat request sent to your advisor.'); }
-    else if (a === 'intro') { if (S.intros[v]) delete S.intros[v]; else S.intros[v] = true; }
+    else if (a === 'intro') { if (S.intros[v]) { delete S.intros[v]; say('Intro cancelled.'); } else { S.intros[v] = true; say('Intro requested. SCIS will reach out.'); } }
     else if (a === 'confirm') { var s = S.cohort.filter(function (x) { return x.id === v; })[0]; if (s) s.audit = 'confirmed'; say('Audit confirmed.'); }
     else if (a === 'approve') {
       if (v === 'seat' && S.seat) { S.seat.status = 'approved'; reply(S.seat.at); marcus().missing = false; }
@@ -427,6 +460,8 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color
     else if (a === 'skip') { skip += 24 * H; }
     else if (a === 'reset') { var r = S.role, tb = S.tab; S = fresh(); S.role = r; S.tab = tb; skip = 0; say('Demo reset.'); }
     render();
+    var again = document.querySelector('[data-action="' + a + '"]' + (v !== null ? '[data-v="' + v + '"]' : ''));
+    if (again && a !== 'skip' && a !== 'reset') again.focus({ preventScroll: true });
   });
 
   document.addEventListener('submit', function (e) {
