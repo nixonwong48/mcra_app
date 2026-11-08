@@ -17,9 +17,11 @@ Replace the Description text with the version below.
 
 Emotion scores above are read off the v1 curve. Check each one against the Smaply chart before pasting. The old description gave Recruitment season -1 and the chart shows 0, so decide which is right.
 
-## Fix 2: Move "Recruit more sponsors who are actually hiring" under Sponsor Review (step 8)
+## Fix 2: Keep the sponsor opportunity under Capstone showcase (step 9)
 
-So it lines up with its pain point ("Many showcase sponsors attend only for grading rather than active talent recruitment").
+The team plan said to move "Recruit more sponsors who are actually hiring" under Sponsor Review. On review of the v1 map, the pain point it answers ("Many showcase sponsors attend only for grading rather than active talent recruitment") sits under **Capstone showcase**, and Sponsor Review has no pain point. So the pair already lines up on step 9. Keep them together there, and tell the team the plan item was based on a wrong assumption.
+
+Also add an **Opportunities** row to the map. In v1 the opportunities appear only in the description box.
 
 ## Fix 3: Make it readable for the panel
 
