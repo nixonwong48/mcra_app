@@ -1,0 +1,443 @@
+<title>Grad Ready</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: top bar with role switch; app column on the left, presenter notes on the right (stacked on phones).
+   Palette: slate neutrals tinted teal, one teal accent, separate good/warn/risk semantics.
+   Type: Bricolage Grotesque (headings), IBM Plex Sans (body), IBM Plex Mono (clocks and numbers). */
+:root {
+  --bg: #eceff1; --surface: #ffffff; --surface-2: #f4f6f7; --ink: #16212b; --muted: #55656f; --line: #d6dde2;
+  --accent: #0b6e6e; --accent-ink: #ffffff; --accent-soft: #d8eeed;
+  --good: #1d7547; --good-soft: #def2e6; --warn: #85560a; --warn-soft: #fcefcf; --risk: #b3261e; --risk-soft: #fbe2df;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e151b; --surface: #16202a; --surface-2: #1c2833; --ink: #e8eef2; --muted: #9bafbc; --line: #2a3945;
+    --accent: #4fc9c4; --accent-ink: #06211f; --accent-soft: #123a3b;
+    --good: #5fd49a; --good-soft: #12301f; --warn: #f0c15a; --warn-soft: #352a0e; --risk: #ff8f85; --risk-soft: #3a1714;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e151b; --surface: #16202a; --surface-2: #1c2833; --ink: #e8eef2; --muted: #9bafbc; --line: #2a3945;
+  --accent: #4fc9c4; --accent-ink: #06211f; --accent-soft: #123a3b;
+  --good: #5fd49a; --good-soft: #12301f; --warn: #f0c15a; --warn-soft: #352a0e; --risk: #ff8f85; --risk-soft: #3a1714;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.15; text-wrap: balance; }
+p { margin: 0; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.shell { max-width: 1120px; margin: 0 auto; display: grid; gap: 16px; }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; justify-content: space-between; }
+.brand { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-width: 0; }
+.brand h1 { white-space: nowrap; }
+.brand-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+.brand h1 { font-size: 22px; }
+.sample { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--warn); background: var(--warn-soft); padding: 3px 8px; border-radius: 99px; }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; max-width: 100%; }
+.seg button { border: 0; background: transparent; padding: 8px 14px; border-radius: 8px; font-weight: 500; color: var(--muted); }
+.seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+
+.layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 960px) { .layout { grid-template-columns: minmax(0, 1fr) 330px; } }
+
+.app { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; min-width: 0; }
+.app-head { padding: 18px 18px 0; display: grid; gap: 4px; }
+.app-head .who { color: var(--muted); font-size: 13px; }
+.app-head h2 { font-size: 24px; }
+.tabs { display: flex; gap: 4px; padding: 14px 18px 0; border-bottom: 1px solid var(--line); }
+.tabs button { border: 0; background: none; padding: 10px 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.body { padding: 18px; display: grid; gap: 18px; min-width: 0; }
+
+.banner { border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
+.banner h3 { font-size: 17px; }
+.banner.warn { background: var(--warn-soft); color: var(--warn); }
+.banner.risk { background: var(--risk-soft); color: var(--risk); }
+.banner.good { background: var(--good-soft); color: var(--good); }
+.banner p { color: var(--ink); }
+
+.sec-title { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.list { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--surface); border-top: 1px solid var(--line); flex-wrap: wrap; }
+.row:first-child { border-top: 0; }
+.row .main { min-width: 0; flex: 1 1 200px; }
+.row .main b { display: block; font-weight: 600; }
+.row .main span { color: var(--muted); font-size: 13.5px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.warn { background: var(--warn-soft); color: var(--warn); }
+.chip.risk { background: var(--risk-soft); color: var(--risk); }
+.chip.info { background: var(--accent-soft); color: var(--accent); }
+.chip.plain { background: var(--surface-2); color: var(--muted); }
+.progress { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.progress i { display: block; height: 100%; background: var(--good); border-radius: 99px; }
+
+.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; padding: 9px 14px; border-radius: 9px; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.quiet { background: var(--surface-2); border-color: var(--line); color: var(--ink); }
+.btn.danger { background: transparent; border-color: var(--risk); color: var(--risk); }
+.btn[disabled] { opacity: .55; cursor: default; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 10px; background: var(--surface); }
+.card.hot { border-color: var(--accent); }
+.clock { font-size: 30px; line-height: 1; }
+.clock.late { color: var(--risk); }
+.day { display: grid; gap: 0; }
+.day-h { font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 8px 14px; background: var(--surface-2); border-top: 1px solid var(--line); }
+.day-h:first-child { border-top: 0; }
+.clash { background: var(--risk-soft); color: var(--risk); font-size: 13px; padding: 8px 14px; font-weight: 500; }
+
+form { display: grid; gap: 10px; }
+label { display: grid; gap: 4px; font-size: 13.5px; font-weight: 600; }
+select, input[type="text"], textarea { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 9px 10px; width: 100%; font-weight: 400; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kpi { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+.kpi .v { font-family: var(--font-mono); font-size: 28px; font-weight: 500; }
+.kpi .l { font-weight: 600; font-size: 13.5px; }
+.kpi .s { color: var(--muted); font-size: 12.5px; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+thead th { border-top: 0; background: var(--surface-2); font-size: 12.5px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+
+.notes { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.notes h2 { font-size: 18px; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.notes .pair { display: grid; gap: 2px; }
+.notes .pair small { color: var(--muted); }
+.pitch { border-left: 3px solid var(--accent); padding-left: 12px; font-style: italic; color: var(--muted); }
+.demo { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--line); }
+.foot { color: var(--muted); font-size: 12.5px; max-width: 70ch; }
+.empty { color: var(--muted); padding: 14px; text-align: center; }
+@media (prefers-reduced-motion: no-preference) { .progress i { transition: width .3s; } }
+</style>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5"/></svg>
+      </div>
+      <h1>Grad Ready</h1>
+      <span class="sample">Prototype · sample data</span>
+    </div>
+    <div class="seg" role="group" aria-label="Switch view">
+      <button type="button" data-action="role" data-v="student" aria-pressed="true">Student</button>
+      <button type="button" data-action="role" data-v="advisor" aria-pressed="false">Advisor</button>
+      <button type="button" data-action="role" data-v="mgmt" aria-pressed="false">SCIS management</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="app" id="app"></main>
+    <aside class="notes" id="notes" aria-label="Presenter notes"></aside>
+  </div>
+  <p class="foot">Prototype for the MCRA Week 13 presentation. Every student, employer and figure shown is sample data, not a real record. The real baseline comes from our survey of Year 4 students.</p>
+  <div class="sr" id="live" aria-live="polite"></div>
+</div>
+
+<script>
+(function () {
+  var H = 3600000;
+  var skip = 0;
+  function now() { return Date.now() + skip; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+  function fresh() {
+    return {
+      role: 'student', tab: 'grad', seat: null, leave: null, replies: [], intros: {},
+      cohort: [
+        { id: 'marcus', name: 'Marcus T.', note: 'Demo student', audit: 'unconfirmed', missing: true },
+        { id: 'b', name: 'Student B', note: 'Year 4, IS', audit: 'confirmed', missing: false },
+        { id: 'c', name: 'Student C', note: 'Year 4, IS', audit: 'unconfirmed', missing: false },
+        { id: 'd', name: 'Student D', note: 'Year 4, IS', audit: 'unconfirmed', missing: true },
+        { id: 'e', name: 'Student E', note: 'Year 4, IS', audit: 'confirmed', missing: false },
+        { id: 'f', name: 'Student F', note: 'Year 4, IS', audit: 'unconfirmed', missing: false }
+      ]
+    };
+  }
+  var S = fresh();
+  function marcus() { return S.cohort[0]; }
+  function atRisk(s) { return s.audit === 'unconfirmed' || s.missing; }
+
+  var EMPLOYERS = [
+    { id: 0, name: 'Product analytics team', meta: 'Fintech scale-up (sample)', tag: 'Capstone sponsor · hiring' },
+    { id: 1, name: 'Associate product manager programme', meta: 'E-commerce platform (sample)', tag: 'Product role' },
+    { id: 2, name: 'Data analyst, growth team', meta: 'Health-tech start-up (sample)', tag: 'Analytics role' }
+  ];
+
+  var WEEK3 = [
+    { day: 'Mon', items: [{ t: 'Capstone interim report due', k: 'Capstone', w: '17:00' }] },
+    { day: 'Wed', items: [{ t: 'Online assessment, Employer A', k: 'Assessment', w: '3-hour window' }] },
+    { day: 'Thu', items: [{ t: 'Capstone sprint demo', k: 'Capstone', w: '14:00' }, { t: 'Online assessment, Employer B', k: 'Assessment', w: 'due 23:59' }],
+      clash: 'Clash: assessment due the same day as the capstone sprint demo.' },
+    { day: 'Fri', items: [{ t: 'Graded team presentation (IS module)', k: 'Coursework', w: '10:00' }, { t: 'Final-round interview, Employer C', k: 'Interview', w: '10:00' }],
+      clash: 'Clash: final-round interview overlaps a graded presentation.' }
+  ];
+
+  var NOTES = {
+    'student-grad': {
+      title: 'Why this screen exists',
+      pairs: [
+        ['Requirements spread across 5 portals', 'One page: done, in progress, missing.'],
+        ['Late audit in the final term (worst moment, -2)', 'Early warning in Week 1-3, with a confirmed audit by Week 3.'],
+        ['Needed module full in BOSS', 'Request a reserved seat; the advisor approves.']
+      ],
+      metric: 'Share of audits confirmed by Week 3'
+    },
+    'student-career': {
+      title: 'Why the Career tab exists',
+      pairs: [
+        ['Career fair is mostly banks', 'Intros to 3+ product and analytics employers, incl. capstone sponsors who are hiring.'],
+        ['Assessments pile up during project deadlines', 'One calendar with clashes flagged.'],
+        ['No rule on interview absences', 'Interview-leave request with a 48-hour reply countdown.']
+      ],
+      metric: 'Interview-leave reply time; intros per student'
+    },
+    advisor: {
+      title: 'Why the advisor view exists',
+      pairs: [
+        ['Advisor replies take about a week', 'At-risk students first, and a 48-hour clock on every request.'],
+        ['Audits confirmed late', 'Confirm each audit by Week 3 from the same list.']
+      ],
+      metric: 'Average reply time; audits confirmed by Week 3'
+    },
+    mgmt: {
+      title: 'Why management gets a view',
+      pairs: [
+        ['No one sees the risk early', 'Students at risk, in one number.'],
+        ['Success is hard to prove', 'Reply time and on-time graduation give our success metrics.']
+      ],
+      metric: 'Students at risk; average reply time; on-time graduation rate'
+    }
+  };
+
+  function chip(kind, text) { return '<span class="chip ' + kind + '">' + esc(text) + '</span>'; }
+
+  function clock(deadline) {
+    return '<span class="mono clock" data-countdown="' + deadline + '">--:--:--</span>';
+  }
+  function fmtClock(ms) {
+    var late = ms < 0, a = Math.abs(ms), h = Math.floor(a / H), m = Math.floor(a % H / 60000), s = Math.floor(a % 60000 / 1000);
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    return (late ? 'Overdue ' : '') + p(h) + ':' + p(m) + ':' + p(s);
+  }
+
+  /* ---------- Student ---------- */
+  function reqList() {
+    var m = marcus();
+    var seat = S.seat && S.seat.status === 'approved';
+    var rows = [
+      { n: 'University core', d: 'All modules complete', st: 'done' },
+      { n: 'Programme core', d: 'All modules complete', st: 'done' },
+      { n: 'Capstone project', d: 'In progress, showcase this term', st: 'prog' },
+      { n: 'Analytics elective', d: seat ? 'Seat reserved by your advisor' : '1 module still needed. Seats left: 0 (full in BOSS)', st: seat ? 'prog' : 'missing' },
+      { n: 'Free electives', d: 'Complete', st: 'done' },
+      { n: 'Internship credit', d: 'Complete', st: 'done' }
+    ];
+    return rows;
+  }
+  function studentGrad() {
+    var m = marcus(), rows = reqList();
+    var done = rows.filter(function (r) { return r.st === 'done'; }).length;
+    var missing = rows.filter(function (r) { return r.st === 'missing'; }).length;
+    var prog = rows.length - done - missing;
+    var auditOk = m.audit === 'confirmed';
+    var banner;
+    if (!auditOk && missing) {
+      banner = '<div class="banner risk"><h3>Early warning: 1 requirement missing</h3><p>Your audit is not confirmed yet and the module you need is full. Sort this out by Week 3 so the final term holds no surprises.</p></div>';
+    } else if (!auditOk) {
+      banner = '<div class="banner warn"><h3>Audit not confirmed yet</h3><p>Your missing seat is sorted. Your advisor still needs to confirm your audit by Week 3.</p></div>';
+    } else if (missing) {
+      banner = '<div class="banner warn"><h3>Audit confirmed, 1 requirement still missing</h3><p>Request a reserved seat for the module you need.</p></div>';
+    } else {
+      banner = '<div class="banner good"><h3>You are on track to graduate</h3><p>Audit confirmed and every requirement is done or in progress.</p></div>';
+    }
+    var seatBlock = '';
+    if (missing) {
+      if (!S.seat || S.seat.status === 'declined') {
+        seatBlock = (S.seat && S.seat.status === 'declined' ? '<p>Your advisor asked to meet before reserving a seat.</p>' : '') +
+          '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request a reserved seat</button></div>';
+      } else {
+        seatBlock = '<div class="card hot"><div><b>Seat request sent to your advisor</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + '</div>';
+      }
+    }
+    return banner +
+      '<section><div class="sec-title"><span>Graduation requirements</span><span>' + done + ' done · ' + prog + ' in progress · ' + missing + ' missing</span></div>' +
+      '<div class="progress" role="img" aria-label="' + done + ' of ' + rows.length + ' requirements done"><i style="width:' + Math.round(done / rows.length * 100) + '%"></i></div></section>' +
+      '<div class="list">' + rows.map(function (r) {
+        var c = r.st === 'done' ? chip('good', 'Done') : r.st === 'prog' ? chip('info', 'In progress') : chip('risk', 'Missing');
+        return '<div class="row"><div class="main"><b>' + esc(r.n) + '</b><span>' + esc(r.d) + '</span></div>' + c + '</div>';
+      }).join('') + '</div>' +
+      seatBlock +
+      '<section><div class="sec-title"><span>Audit confirmation</span></div><div class="list"><div class="row"><div class="main"><b>Confirmed by your advisor</b><span>Due by Week 3 of your final Term 1</span></div>' +
+      (auditOk ? chip('good', 'Confirmed') : chip('warn', 'Not yet')) + '</div></div></section>';
+  }
+
+  function studentCareer() {
+    var intros = Object.keys(S.intros).length;
+    var out = '<section><div class="sec-title"><span>Employer matches</span><span>' + intros + ' of 3 intros requested</span></div><div class="list">' +
+      EMPLOYERS.map(function (e) {
+        var on = !!S.intros[e.id];
+        return '<div class="row"><div class="main"><b>' + esc(e.name) + '</b><span>' + esc(e.meta) + '</span><div style="margin-top:6px">' + chip(e.id === 0 ? 'good' : 'info', e.tag) + '</div></div>' +
+          '<button type="button" class="btn ' + (on ? 'quiet' : 'ghost') + '" data-action="intro" data-v="' + e.id + '" aria-pressed="' + on + '">' + (on ? 'Intro requested' : 'Request intro') + '</button></div>';
+      }).join('') + '</div></section>';
+
+    out += '<section><div class="sec-title"><span>Deadlines in one calendar</span><span>Week 3 · 2 clashes</span></div><div class="list day">' +
+      WEEK3.map(function (d) {
+        return '<div class="day-h">' + d.day + '</div>' + d.items.map(function (i) {
+          return '<div class="row"><div class="main"><b>' + esc(i.t) + '</b><span>' + esc(i.w) + '</span></div>' + chip(i.k === 'Assessment' || i.k === 'Interview' ? 'warn' : i.k === 'Capstone' ? 'info' : 'plain', i.k) + '</div>';
+        }).join('') + (d.clash ? '<div class="clash">' + esc(d.clash) + '</div>' : '');
+      }).join('') + '</div></section>';
+
+    var L = S.leave, form;
+    if (!L || L.status === 'declined') {
+      form = (L ? '<p>Your advisor declined the request. You can send a new one.</p>' : '') +
+        '<form id="leave-form"><label for="leave-activity">Which graded activity clashes?<select id="leave-activity"><option>Graded team presentation (IS module), Week 3 Fri 10:00</option><option>Capstone sprint demo, Week 3 Thu 14:00</option></select></label>' +
+        '<label for="leave-employer">Interview with<input type="text" id="leave-employer" value="Employer C (sample)"></label>' +
+        '<div class="actions"><button type="submit" class="btn">Send request</button></div></form>';
+    } else if (L.status === 'pending') {
+      form = '<div class="card hot"><b>Request sent</b><span>' + esc(L.activity) + '</span><div class="mono">Reply due in</div>' + clock(L.at + 48 * H) + '</div>';
+    } else {
+      form = '<div class="banner good"><h3>Approved</h3><p>Your advisor approved the interview leave for: ' + esc(L.activity) + '.</p></div>';
+    }
+    out += '<section><div class="sec-title"><span>Interview-leave request</span><span>Reply within 48 hours</span></div>' + form + '</section>';
+    return out;
+  }
+
+  /* ---------- Advisor ---------- */
+  function advisorView() {
+    var pend = [];
+    if (S.seat && S.seat.status === 'pending') pend.push({ k: 'seat', t: 'Reserved seat: Analytics elective', who: 'Marcus T.', at: S.seat.at });
+    if (S.leave && S.leave.status === 'pending') pend.push({ k: 'leave', t: 'Interview leave: ' + S.leave.activity, who: 'Marcus T.', at: S.leave.at });
+    var risky = S.cohort.slice().sort(function (a, b) { return (atRisk(b) ? 1 : 0) - (atRisk(a) ? 1 : 0); });
+    var toConfirm = S.cohort.filter(function (s) { return s.audit === 'unconfirmed'; }).length;
+    return '<div class="kpis"><div class="kpi"><span class="v">' + pend.length + '</span><span class="l">Requests waiting</span><span class="s">48-hour clock on each</span></div>' +
+      '<div class="kpi"><span class="v">' + toConfirm + '</span><span class="l">Audits to confirm</span><span class="s">Due by Week 3</span></div></div>' +
+      '<section><div class="sec-title"><span>Requests</span></div>' +
+      (pend.length ? '<div class="list">' + pend.map(function (p) {
+        return '<div class="row"><div class="main"><b>' + esc(p.t) + '</b><span>' + esc(p.who) + ' · reply due in </span>' + '<span class="mono" data-countdown="' + (p.at + 48 * H) + '" data-inline="1">--:--:--</span></div>' +
+          '<div class="actions"><button type="button" class="btn" data-action="approve" data-v="' + p.k + '">Approve</button><button type="button" class="btn danger" data-action="decline" data-v="' + p.k + '">Decline</button></div></div>';
+      }).join('') + '</div>' : '<div class="list"><div class="empty">No requests waiting. In the Student view, request a seat or interview leave to see one here.</div></div>') + '</section>' +
+      '<section><div class="sec-title"><span>Students, at risk first</span></div><div class="list">' + risky.map(function (s) {
+        var tags = [];
+        if (s.audit === 'unconfirmed') tags.push(chip('warn', 'Audit unconfirmed'));
+        if (s.missing) tags.push(chip('risk', 'Requirement missing'));
+        if (!tags.length) tags.push(chip('good', 'On track'));
+        return '<div class="row"><div class="main"><b>' + esc(s.name) + '</b><span>' + esc(s.note) + '</span><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">' + tags.join('') + '</div></div>' +
+          (s.audit === 'unconfirmed' ? '<button type="button" class="btn ghost" data-action="confirm" data-v="' + s.id + '">Confirm audit</button>' : '') + '</div>';
+      }).join('') + '</div></section>';
+  }
+
+  /* ---------- Management ---------- */
+  function avgReply() {
+    if (!S.replies.length) return null;
+    return S.replies.reduce(function (a, b) { return a + b; }, 0) / S.replies.length;
+  }
+  function mgmtView() {
+    var n = S.cohort.length;
+    var risk = S.cohort.filter(atRisk).length;
+    var conf = S.cohort.filter(function (s) { return s.audit === 'confirmed'; }).length;
+    var onTime = S.cohort.filter(function (s) { return !s.missing; }).length;
+    var avg = avgReply();
+    var avgTxt = avg === null ? '--' : (avg < 1 ? '< 1 h' : (Math.round(avg * 10) / 10) + ' h');
+    return '<div class="kpis">' +
+      '<div class="kpi"><span class="v">' + risk + '</span><span class="l">Students at risk</span><span class="s">of ' + n + ' in sample cohort</span></div>' +
+      '<div class="kpi"><span class="v">' + conf + '/' + n + '</span><span class="l">Audits confirmed</span><span class="s">Target: all by Week 3</span></div>' +
+      '<div class="kpi"><span class="v">' + avgTxt + '</span><span class="l">Average advisor reply</span><span class="s">Baseline about 1 week. Target 48 h.</span></div>' +
+      '<div class="kpi"><span class="v">' + Math.round(onTime / n * 100) + '%</span><span class="l">On-time graduation</span><span class="s">Projected, sample cohort</span></div></div>' +
+      '<section><div class="sec-title"><span>Who owns each fix (suggested)</span></div><div class="tbl-wrap"><table><thead><tr><th>Fix</th><th>Owner</th><th>Success metric</th></tr></thead><tbody>' +
+      '<tr><td>Audit confirmed by Week 3</td><td>Registrar and advisors</td><td>% audits confirmed by Week 3</td></tr>' +
+      '<tr><td>Reserved seats for graduating students</td><td>Registrar</td><td>Students blocked by a full module</td></tr>' +
+      '<tr><td>Interview-leave form, 48-hour reply</td><td>Career centre and faculty</td><td>Median reply time</td></tr>' +
+      '<tr><td>Hiring sponsors and alumni mentors</td><td>Capstone office</td><td>Interview invites from showcases</td></tr>' +
+      '</tbody></table></div></section>';
+  }
+
+  /* ---------- Render ---------- */
+  function render() {
+    var key = S.role === 'student' ? 'student-' + S.tab : S.role;
+    var who = S.role === 'student' ? 'Marcus Tan · Year 4 · Information Systems' : S.role === 'advisor' ? 'Academic advisor · Week 2 of Term 1' : 'SCIS management · sample cohort';
+    var title = S.role === 'student' ? (S.tab === 'grad' ? 'Graduation' : 'Career') : S.role === 'advisor' ? 'Advisor inbox' : 'Programme health';
+    var tabs = S.role === 'student'
+      ? '<div class="tabs" role="tablist"><button type="button" role="tab" data-action="tab" data-v="grad" aria-selected="' + (S.tab === 'grad') + '">Graduation</button><button type="button" role="tab" data-action="tab" data-v="career" aria-selected="' + (S.tab === 'career') + '">Career</button></div>'
+      : '<div style="border-bottom:1px solid var(--line);margin-top:14px"></div>';
+    var body = S.role === 'student' ? (S.tab === 'grad' ? studentGrad() : studentCareer()) : S.role === 'advisor' ? advisorView() : mgmtView();
+    document.getElementById('app').innerHTML = '<div class="app-head"><span class="who">' + esc(who) + '</span><h2>' + esc(title) + '</h2></div>' + tabs + '<div class="body">' + body + '</div>';
+
+    var N = NOTES[key];
+    document.getElementById('notes').innerHTML = '<h2>' + esc(N.title) + '</h2>' +
+      N.pairs.map(function (p) { return '<div class="pair"><b>' + esc(p[0]) + '</b><small>' + esc(p[1]) + '</small></div>'; }).join('') +
+      '<div class="pair"><b>Metric it gives us</b><small>' + esc(N.metric) + '</small></div>' +
+      '<p class="pitch">Grad Ready gets Marcus through both of his biggest risks: not graduating, and not getting hired.</p>' +
+      '<div class="demo"><button type="button" class="btn quiet" data-action="skip">Skip 24 hours (demo)</button><button type="button" class="btn quiet" data-action="reset">Reset demo</button></div>';
+
+    document.querySelectorAll('[data-action="role"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === S.role)); });
+    tick();
+  }
+
+  function tick() {
+    document.querySelectorAll('[data-countdown]').forEach(function (el) {
+      var ms = Number(el.getAttribute('data-countdown')) - now();
+      el.textContent = fmtClock(ms);
+      el.classList.toggle('late', ms < 0);
+    });
+  }
+  setInterval(tick, 1000);
+
+  function say(t) { document.getElementById('live').textContent = t; }
+  function reply(at) { S.replies.push((now() - at) / H); }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-action]');
+    if (!t) return;
+    var a = t.getAttribute('data-action'), v = t.getAttribute('data-v');
+    if (a === 'role') { S.role = v; }
+    else if (a === 'tab') { S.tab = v; }
+    else if (a === 'seat-request') { S.seat = { at: now(), status: 'pending' }; say('Seat request sent to your advisor.'); }
+    else if (a === 'intro') { if (S.intros[v]) delete S.intros[v]; else S.intros[v] = true; }
+    else if (a === 'confirm') { var s = S.cohort.filter(function (x) { return x.id === v; })[0]; if (s) s.audit = 'confirmed'; say('Audit confirmed.'); }
+    else if (a === 'approve') {
+      if (v === 'seat' && S.seat) { S.seat.status = 'approved'; reply(S.seat.at); marcus().missing = false; }
+      if (v === 'leave' && S.leave) { S.leave.status = 'approved'; reply(S.leave.at); }
+      say('Request approved.');
+    }
+    else if (a === 'decline') {
+      if (v === 'seat' && S.seat) { S.seat.status = 'declined'; reply(S.seat.at); }
+      if (v === 'leave' && S.leave) { S.leave.status = 'declined'; reply(S.leave.at); }
+      say('Request declined.');
+    }
+    else if (a === 'skip') { skip += 24 * H; }
+    else if (a === 'reset') { var r = S.role, tb = S.tab; S = fresh(); S.role = r; S.tab = tb; skip = 0; say('Demo reset.'); }
+    render();
+  });
+
+  document.addEventListener('submit', function (e) {
+    if (e.target.id !== 'leave-form') return;
+    e.preventDefault();
+    var act = document.getElementById('leave-activity').value;
+    S.leave = { at: now(), status: 'pending', activity: act };
+    say('Interview-leave request sent. Reply due within 48 hours.');
+    render();
+  });
+
+  render();
+})();
+</script>
