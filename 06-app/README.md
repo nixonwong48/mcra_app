@@ -13,6 +13,8 @@ This is an **EXTRA** deliverable. It must never eat into the Tableau Story or th
 | Advisor | Pending requests with countdowns, students at risk first, Approve / Decline / Confirm audit | Advisor replies take about a week |
 | SCIS management | Students at risk, audits confirmed, average reply time, projected on-time graduation, suggested owners | Gives us our success metrics |
 
+The layout adapts to phone, tablet and laptop. On a laptop, a **Phone / Laptop** switch in the top bar shows any view (student, advisor or management) inside a phone frame or at full width. The student view opens in the phone frame by default, which suits the 30-second demo.
+
 The views are linked: a seat request made as the student shows up in the advisor view, and approving it updates the student view and the management tiles. The side panel has "Skip 24 hours (demo)" and "Reset demo" buttons.
 
 ## What is left for you

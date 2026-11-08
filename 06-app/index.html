@@ -64,7 +64,8 @@ button { cursor: pointer; }
 .tabs { display: flex; gap: 4px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--surface); position: sticky; bottom: 0; z-index: 5; }
 .tabs button { flex: 1; border: 0; background: none; min-height: 52px; border-radius: 12px; display: grid; justify-items: center; align-content: center; gap: 2px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
 .tabs button[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); }
-.body { padding: 18px; display: grid; gap: 18px; min-width: 0; align-content: start; flex: 1; }
+.body { padding: 18px; display: flex; flex-direction: column; gap: 18px; min-width: 0; flex: 1; }
+.body > * { flex: none; min-width: 0; }
 
 .banner { border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
 .banner h3 { font-size: 17px; }
@@ -113,7 +114,7 @@ form { display: grid; gap: 10px; }
 label { display: grid; gap: 4px; font-size: 13.5px; font-weight: 600; }
 select, input[type="text"], textarea { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 9px 10px; width: 100%; font-weight: 400; }
 
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .kpi { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
 .kpi .v { font-family: var(--font-mono); font-size: 28px; font-weight: 500; }
 .kpi .l { font-weight: 600; font-size: 13.5px; }
@@ -138,9 +139,23 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
   .app.phone .body { overflow-y: auto; }
   .notes { position: sticky; top: 16px; }
 }
+@media (max-width: 600px) {
+  table { min-width: 0; }
+  thead { display: none; }
+  table, tbody, tr, td { display: block; }
+  tr { padding: 10px 12px; border-top: 1px solid var(--line); }
+  tr:first-child { border-top: 0; }
+  td { border: 0; padding: 1px 0; }
+  td:first-child { font-weight: 600; }
+  td:nth-child(2)::before { content: "Owner: "; color: var(--muted); }
+  td:nth-child(3)::before { content: "Metric: "; color: var(--muted); }
+}
 .toast { position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); z-index: 50; max-width: calc(100vw - 32px);
   background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 99px; font-weight: 500; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); }
 .banner .actions { margin-top: 6px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg.device { display: none; }
+@media (min-width: 960px) { .seg.device { display: inline-flex; } }
 @media (prefers-reduced-motion: no-preference) {
   .progress i { transition: width .3s; }
   .toast { animation: toast-in .2s ease-out; }
@@ -157,10 +172,16 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
       <h1>Grad Ready</h1>
       <span class="sample">Prototype · sample data</span>
     </div>
+    <div class="controls">
+    <div class="seg device" role="group" aria-label="Preview on">
+      <button type="button" data-action="device" data-v="phone" aria-pressed="true">Phone</button>
+      <button type="button" data-action="device" data-v="wide" aria-pressed="false">Laptop</button>
+    </div>
     <div class="seg" role="group" aria-label="Switch view">
       <button type="button" data-action="role" data-v="student" aria-pressed="true">Student</button>
       <button type="button" data-action="role" data-v="advisor" aria-pressed="false">Advisor</button>
       <button type="button" data-action="role" data-v="mgmt" aria-pressed="false">Management</button>
+    </div>
     </div>
   </header>
 
@@ -182,7 +203,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
 
   function fresh() {
     return {
-      role: 'student', tab: 'grad', seat: null, leave: null, replies: [], intros: {},
+      role: 'student', tab: 'grad', device: 'auto', seat: null, leave: null, replies: [], intros: {},
       cohort: [
         { id: 'marcus', name: 'Marcus T.', note: 'Demo student', audit: 'unconfirmed', missing: true },
         { id: 'b', name: 'Student B', note: 'Year 4, IS', audit: 'confirmed', missing: false },
@@ -406,7 +427,9 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
       : '';
     var body = S.role === 'student' ? (S.tab === 'grad' ? studentGrad() : studentCareer()) : S.role === 'advisor' ? advisorView() : mgmtView();
     document.getElementById('app').innerHTML = '<div class="app-head"><span class="who">' + esc(who) + '</span><h2>' + esc(title) + '</h2></div>' + '<div class="body">' + body + '</div>' + tabs;
-    document.getElementById('app').className = 'app' + (S.role === 'student' ? ' phone' : '');
+    var phoneMode = S.device === 'phone' || (S.device === 'auto' && S.role === 'student');
+    document.getElementById('app').className = 'app' + (phoneMode ? ' phone' : '');
+    document.querySelectorAll('[data-action="device"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === (phoneMode ? 'phone' : 'wide'))); });
 
     var N = NOTES[key];
     document.getElementById('notes').innerHTML = '<h2>' + esc(N.title) + '</h2>' +
@@ -443,6 +466,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     if (!t) return;
     var a = t.getAttribute('data-action'), v = t.getAttribute('data-v');
     if (a === 'role') { S.role = v; }
+    else if (a === 'device') { S.device = v; }
     else if (a === 'tab') { S.tab = v; }
     else if (a === 'seat-request') { S.seat = { at: now(), status: 'pending' }; say('Seat request sent to your advisor.'); }
     else if (a === 'intro') { if (S.intros[v]) { delete S.intros[v]; say('Intro cancelled.'); } else { S.intros[v] = true; say('Intro requested. SCIS will reach out.'); } }
@@ -458,7 +482,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
       say('Request declined.');
     }
     else if (a === 'skip') { skip += 24 * H; }
-    else if (a === 'reset') { var r = S.role, tb = S.tab; S = fresh(); S.role = r; S.tab = tb; skip = 0; say('Demo reset.'); }
+    else if (a === 'reset') { var r = S.role, tb = S.tab, dv = S.device; S = fresh(); S.role = r; S.tab = tb; S.device = dv; skip = 0; say('Demo reset.'); }
     render();
     var again = document.querySelector('[data-action="' + a + '"]' + (v !== null ? '[data-v="' + v + '"]' : ''));
     if (again && a !== 'skip' && a !== 'reset') again.focus({ preventScroll: true });
