@@ -1,6 +1,6 @@
-# Grad Ready app prototype (Person 7: Eryn)
+# Grad Ready app prototype (owner: Eryn)
 
-This is an **EXTRA** deliverable. It must never eat into the Tableau Story or the strategy. The brief gives it about 30 seconds of the presentation.
+This is an extra deliverable with about 30 seconds of the presentation, so it only needs to work and show how it solves the persona's needs and pain points.
 
 ## What already exists (starter by Nixon)
 
@@ -31,6 +31,6 @@ The views are linked: a seat request made as the student shows up in the advisor
 
 ## Rules
 
-- Only work in `06-app/`. Save new versions with a number (`index_v2.html`) if you want to keep the old one.
+- Save new versions with a number (`index_v2.html`) if you want to keep the old one.
 - Keep all data labelled as sample or illustrative. Don't invent real statistics.
-- If time runs short, show 3 static screens instead of a live demo, or skip the app. The team plan says to cut this before anything else.
+- If time runs short, show 3 static screens instead of a live demo.
