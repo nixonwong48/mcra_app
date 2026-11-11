@@ -81,7 +81,7 @@ Plain, short, reassuring. Say what is wrong, then what to do next.
 
 ## Responsive
 
-- Phone first. On 960px and wider, the student view sits in a phone frame with presenter notes beside it. The Phone/Laptop switch overrides this for any role.
+- Phone first. On 960px and wider, the app starts in a phone frame with presenter notes beside it. The Phone/Laptop selection persists across all roles and demo resets.
 - Lists and tables never get a fixed height that can squash their content.
 
 ## Posters

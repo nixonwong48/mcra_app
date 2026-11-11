@@ -13,7 +13,7 @@ This is an extra deliverable with about 30 seconds of the presentation, so it on
 | Advisor | Pending requests with countdowns, students at risk first, Approve / Decline / Confirm audit | Advisor replies take about a week |
 | SCIS management | Students at risk, audits confirmed, average reply time, requirements on track, suggested owners | Gives us our success metrics |
 
-The layout adapts to phone, tablet and laptop. On a laptop, a **Phone / Laptop** switch in the top bar shows any view (student, advisor or management) inside a phone frame or at full width. The student view opens in the phone frame by default, which suits the 30-second demo.
+The layout adapts to phone, tablet and laptop. On a laptop, a **Phone / Laptop** switch in the top bar shows any view (student, advisor or management) inside a phone frame or at full width. The app opens in the phone frame by default. The selected Phone / Laptop mode stays the same when switching roles or resetting the demo.
 
 The views are linked: a seat request made as the student shows up in the advisor view, and approving it updates the student view and the management tiles. Expand **Presenter guide & demo controls** beside or below the app to access **Skip 24 hours (demo)** and **Reset demo**.
 

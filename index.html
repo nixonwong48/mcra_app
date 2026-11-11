@@ -240,7 +240,7 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
 
   function fresh() {
     return {
-      role: 'student', tab: 'grad', device: 'auto', seat: null, leave: null, replies: [], intros: {},
+      role: 'student', tab: 'grad', device: 'phone', seat: null, leave: null, replies: [], intros: {},
       cohort: [
         { id: 'marcus', name: 'Marcus T.', note: 'Demo student', audit: 'unconfirmed', missing: true },
         { id: 'b', name: 'Student B', note: 'Year 4, IS', audit: 'confirmed', missing: false },
@@ -465,7 +465,7 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
       : '';
     var body = S.role === 'student' ? (S.tab === 'grad' ? studentGrad() : studentCareer()) : S.role === 'advisor' ? advisorView() : mgmtView();
     document.getElementById('app').innerHTML = '<div class="app-head"><span class="who">' + esc(who) + '</span><h2>' + esc(title) + '</h2></div>' + '<div class="body">' + body + '</div>' + tabs;
-    var phoneMode = S.device === 'phone' || (S.device === 'auto' && S.role === 'student');
+    var phoneMode = S.device === 'phone';
     document.getElementById('app').className = 'app' + (phoneMode ? ' phone' : '');
     document.querySelectorAll('[data-action="device"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === (phoneMode ? 'phone' : 'wide'))); });
 
