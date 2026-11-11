@@ -1,12 +1,18 @@
 # Grad Ready: app prototype
 
-Clickable prototype for the MCRA Week 13 presentation (SMU SCIS, Managing Customer Relations with Analytics). Grad Ready helps Year 4 students see every graduation requirement on one page, get an early warning before the final term, and get fast replies from advisors.
+Clickable prototype for the MCRA Week 13 presentation (SMU SCIS, Managing Customer Relations with Analytics). Grad Ready helps Marcus manage his two biggest Year 4 risks: graduating late and not getting hired. One app combines graduation requirements and early warnings with employer introductions, deadline clashes and interview-leave requests.
 
 Everything on screen is **sample data** and says so.
 
 ## Run it
 
-Download `06-app/index.html` and double-click it. It runs in any browser, with no install.
+Open `06-app/index.html` in a browser by double-clicking it in Finder. No installation or build step is needed. Google Fonts loads online; system fonts are used as a fallback.
+
+Start in **Student → Graduation**, click **Request seat**, then switch to **Advisor** to approve it and confirm Marcus’s audit. Check **Management** for updated metrics, then explore **Student → Career**.
+
+The interface uses white surfaces, charcoal actions and a phone-friendly card layout. Expand **Presenter guide & demo controls** beside or below the app to skip 24 hours or reset. Refreshing also resets all sample data.
+
+See [the app guide](06-app/README.md) for the full demo and presentation checklist.
 
 ## Where things are
 

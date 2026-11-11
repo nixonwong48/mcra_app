@@ -1,40 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grad Ready</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 /* Layout: top bar with role switch; app column on the left, presenter notes on the right (stacked on phones).
-   Palette: slate neutrals tinted teal, one teal accent, separate good/warn/risk semantics.
-   Type: Bricolage Grotesque (headings), IBM Plex Sans (body), IBM Plex Mono (clocks and numbers). */
+   Palette: white surfaces, charcoal actions, restrained good/warn/risk semantics.
+   Type: IBM Plex Sans (headings and body), IBM Plex Mono (clocks and numbers). */
 :root {
-  --bg: #eceff1; --surface: #ffffff; --surface-2: #f4f6f7; --ink: #16212b; --muted: #55656f; --line: #d6dde2;
-  --accent: #0b6e6e; --accent-ink: #ffffff; --accent-soft: #d8eeed;
-  --good: #1d7547; --good-soft: #def2e6; --warn: #85560a; --warn-soft: #fcefcf; --risk: #b3261e; --risk-soft: #fbe2df;
-  --cream: #f7f1e3; --shadow: 0 1px 2px rgba(15,23,32,.04), 0 4px 12px rgba(15,23,32,.06);
-  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --bg: #ffffff; --surface: #ffffff; --surface-2: #f7f7f7; --ink: #242424; --muted: #666666; --line: #e3e3e3;
+  --accent: #303030; --accent-ink: #ffffff; --accent-soft: #f1f1f1;
+  --good: #1d7547; --good-soft: #f4f8f5; --warn: #85560a; --warn-soft: #fbf8f0; --risk: #b3261e; --risk-soft: #fcf5f4;
+  --cream: #ffffff; --shadow: 0 1px 2px rgba(15,23,32,.04), 0 4px 12px rgba(15,23,32,.06);
+  --font-display: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --cream: #2a2619; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.35);
-    --bg: #0e151b; --surface: #16202a; --surface-2: #1c2833; --ink: #e8eef2; --muted: #9bafbc; --line: #2a3945;
-    --accent: #4fc9c4; --accent-ink: #06211f; --accent-soft: #123a3b;
-    --good: #5fd49a; --good-soft: #12301f; --warn: #f0c15a; --warn-soft: #352a0e; --risk: #ff8f85; --risk-soft: #3a1714;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --cream: #2a2619; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.35);
-  --bg: #0e151b; --surface: #16202a; --surface-2: #1c2833; --ink: #e8eef2; --muted: #9bafbc; --line: #2a3945;
-  --accent: #4fc9c4; --accent-ink: #06211f; --accent-soft: #123a3b;
-  --good: #5fd49a; --good-soft: #12301f; --warn: #f0c15a; --warn-soft: #352a0e; --risk: #ff8f85; --risk-soft: #3a1714;
-  color-scheme: dark;
-}
-:root { --bezel: #1d2a35; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bezel: #04070a; } }
-:root[data-theme="dark"] { --bezel: #04070a; }
+:root { --bezel: #303030; color-scheme: light; }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; font-variant-numeric: tabular-nums;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px; }
@@ -61,7 +46,7 @@ button { cursor: pointer; }
 @media (min-width: 960px) { .layout { grid-template-columns: minmax(0, 1fr) 330px; } }
 
 .app { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: clip; min-width: 0; display: flex; flex-direction: column; }
-.app-head { padding: 18px 18px 14px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, var(--accent-soft), var(--surface) 85%); }
+.app-head { padding: 18px 18px 14px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); background: var(--surface); }
 .app-head .who { color: var(--muted); font-size: 13px; }
 .app-head h2 { font-size: 24px; }
 .tabs { display: flex; gap: 4px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--surface); position: sticky; bottom: 0; z-index: 5; }
@@ -138,7 +123,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
 .empty { color: var(--muted); padding: 14px; text-align: center; }
 @media (min-width: 960px) {
   .app.phone { width: 100%; max-width: 410px; margin: 0 auto; border: 9px solid var(--bezel); border-radius: 42px; overflow: hidden;
-    height: min(820px, calc(100vh - 120px)); min-height: 600px; box-shadow: 0 0 0 1px var(--line), 0 28px 60px rgba(8, 20, 28, .22); }
+    height: min(820px, calc(100vh - 120px)); min-height: 600px; box-shadow: 0 0 0 1px var(--line), 0 8px 24px rgba(0, 0, 0, .06); }
   .app.phone .body { overflow-y: auto; }
   .notes { position: sticky; top: 16px; }
 }
@@ -163,6 +148,55 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
   .progress i { transition: width .3s; }
   .toast { animation: toast-in .2s ease-out; }
   @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+}
+
+/* Distinct task groups on phones and in the phone preview. */
+.section-card { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.next-step { display: grid; gap: 12px; }
+.next-step > .sec-title { margin: 0; }
+.active-requirements { margin-top: 16px; }
+.completed { margin-top: 14px; border-top: 1px solid var(--line); }
+summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; font-size: 13px; }
+.completed summary span { color: var(--muted); margin-left: 8px; }
+.audit-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+.row .main > span { display: block; margin-top: 3px; }
+.employers > .list { border: 0; border-radius: 0; gap: 12px; }
+.employers .row { border: 1px solid var(--line); border-radius: 10px; align-items: start; }
+.employers .row > .btn { flex: 1 0 100%; }
+.calendar > .day { border: 0; border-radius: 0; gap: 12px; }
+.calendar-day { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.calendar .row { gap: 8px; padding: 10px 12px; }
+.calendar .row .main { flex-basis: 160px; }
+.clash .actions { margin-top: 10px; }
+#leave-section form { gap: 16px; }
+#leave-section form > p { color: var(--muted); font-size: 13px; }
+#leave-section form .btn { width: 100%; }
+.presenter-content { display: grid; gap: 14px; padding-top: 12px; }
+.presenter-details > summary { padding: 0; display: flex; align-items: center; }
+.presenter-details > summary::before { content: '+'; margin-right: 10px; }
+.presenter-details[open] > summary::before { content: '−'; }
+.app.phone .body { background: #fafafa; padding: 14px; gap: 22px; }
+.app.phone .sec-title { align-items: center; }
+.app.phone .sec-title > span:first-child { font-size: 14px; }
+@media (max-width: 600px) {
+  body { margin: 0; padding: 12px 10px 24px; }
+  .shell { gap: 14px; }
+  .topbar { gap: 12px; }
+  .brand h1 { font-size: 20px; }
+  .sample { font-size: 11px; background: var(--surface-2); color: var(--muted); }
+  .controls, .controls > .seg { width: 100%; }
+  .controls > .seg button { flex: 1; padding: 8px; }
+  .body { padding: 14px; gap: 22px; background: #fafafa; }
+  .app-head { padding: 18px 16px; }
+  .section-card { padding: 14px; }
+  .sec-title { align-items: center; }
+  .sec-title > span:first-child { font-size: 14px; }
+  .banner { padding: 14px; gap: 8px; }
+  .banner .btn { width: 100%; }
+  .banner p { font-size: 14px; }
+  .notes { padding: 14px; border-radius: 12px; }
+  .foot { font-size: 11px; }
+  input[type="text"], select { font-size: 16px; min-height: 44px; }
 }
 </style>
 
@@ -223,17 +257,17 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
 
   var EMPLOYERS = [
     { id: 0, name: 'Product analytics team', meta: 'Fintech scale-up (sample)', tag: 'Capstone sponsor · hiring' },
-    { id: 1, name: 'Associate product manager programme', meta: 'E-commerce platform (sample)', tag: 'Product role' },
+    { id: 1, name: 'Associate product manager', meta: 'E-commerce platform (sample)', tag: 'Product role' },
     { id: 2, name: 'Data analyst, growth team', meta: 'Health-tech start-up (sample)', tag: 'Analytics role' }
   ];
 
   var WEEK3 = [
-    { day: 'Mon', items: [{ t: 'Capstone interim report due', k: 'Capstone', w: '17:00' }] },
+    { day: 'Mon', items: [{ t: 'Capstone report due', k: 'Capstone', w: '17:00' }] },
     { day: 'Wed', items: [{ t: 'Online assessment, Employer A', k: 'Assessment', w: '3-hour window' }] },
     { day: 'Thu', items: [{ t: 'Capstone sprint demo', k: 'Capstone', w: '14:00' }, { t: 'Online assessment, Employer B', k: 'Assessment', w: 'due 23:59' }],
-      clash: 'Clash: assessment due the same day as the capstone sprint demo.' },
-    { day: 'Fri', items: [{ t: 'Graded team presentation (IS module)', k: 'Coursework', w: '10:00' }, { t: 'Final-round interview, Employer C', k: 'Interview', w: '10:00' }],
-      clash: 'Clash: final-round interview overlaps a graded presentation.' }
+      clash: 'Workload clash · demo + assessment' },
+    { day: 'Fri', items: [{ t: 'Team presentation', k: 'Coursework', w: '10:00' }, { t: 'Final-round interview, Employer C', k: 'Interview', w: '10:00' }],
+      leave: true, clash: 'Time clash · interview + presentation' }
   ];
 
   var NOTES = {
@@ -267,9 +301,9 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
       title: 'Why management gets a view',
       pairs: [
         ['No one sees the risk early', 'Students at risk, in one number.'],
-        ['Success is hard to prove', 'Reply time and on-time graduation give our success metrics.']
+        ['Success is hard to prove', 'Reply time and requirements on track give our success metrics.']
       ],
-      metric: 'Students at risk; average reply time; on-time graduation rate'
+      metric: 'Students at risk; average reply time; requirements on track'
     }
   };
 
@@ -291,8 +325,8 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     var rows = [
       { n: 'University core', d: 'All modules complete', st: 'done' },
       { n: 'Programme core', d: 'All modules complete', st: 'done' },
-      { n: 'Capstone project', d: 'In progress, showcase this term', st: 'prog' },
-      { n: 'Analytics elective', d: seat ? 'Seat reserved by your advisor' : '1 module still needed. Seats left: 0 (full in BOSS)', st: seat ? 'prog' : 'missing' },
+      { n: 'Capstone project', d: 'Showcase this term', st: 'prog' },
+      { n: 'Analytics elective', d: seat ? 'Seat reserved' : '1 module needed · BOSS full', st: seat ? 'prog' : 'missing' },
       { n: 'Free electives', d: 'Complete', st: 'done' },
       { n: 'Internship credit', d: 'Complete', st: 'done' }
     ];
@@ -306,66 +340,67 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     var auditOk = m.audit === 'confirmed';
     var banner;
     if (!auditOk && missing) {
-      banner = '<div class="banner risk"><h3>Early warning: 1 requirement missing</h3><p>Your audit is not confirmed yet and the module you need is full. Sort this out by Week 3 so the final term holds no surprises.</p></div>';
+      banner = '<div class="banner risk"><h3>1 module needs attention</h3><p>Analytics elective is full. Request a seat before Week 3.</p></div>';
     } else if (!auditOk) {
-      banner = '<div class="banner warn"><h3>Audit not confirmed yet</h3><p>Your missing seat is sorted. Your advisor still needs to confirm your audit by Week 3.</p></div>';
+      banner = '<div class="banner warn"><h3>Seat secured. Audit pending.</h3><p>Your advisor will confirm your audit by Week 3.</p></div>';
     } else if (missing) {
-      banner = '<div class="banner warn"><h3>Audit confirmed, 1 requirement still missing</h3><p>Request a reserved seat for the module you need.</p></div>';
+      banner = '<div class="banner warn"><h3>Audit confirmed · 1 module missing</h3><p>Reserve your Analytics elective seat.</p></div>';
     } else {
-      banner = '<div class="banner good"><h3>You are on track to graduate</h3><p>Audit confirmed and every requirement is done or in progress.</p></div>';
+      banner = '<div class="banner good"><h3>On track to graduate</h3><p>Audit confirmed. No missing requirements.</p></div>';
     }
     var canAsk = missing && (!S.seat || S.seat.status === 'declined');
     if (canAsk) {
-      banner = banner.replace(/<\/div>$/, '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request a reserved seat</button></div></div>');
+      banner = banner.replace(/<\/div>$/, '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request seat</button></div></div>');
     }
     var seatBlock = '';
     if (missing) {
       if (S.seat && S.seat.status === 'declined') {
-        seatBlock = '<p>Your advisor asked to meet before reserving a seat. You can send a new request from the banner above.</p>';
+        seatBlock = '<p>Meet your advisor, then request again.</p>';
       } else if (!canAsk) {
-        seatBlock = '<div class="card hot"><div><b>Seat request sent to your advisor</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + '</div>';
+        seatBlock = '<div class="card hot"><div><b>Seat request pending</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + '</div>';
       }
     }
-    return banner +
-      '<section><div class="sec-title"><span>Graduation requirements</span><span>' + done + ' done · ' + prog + ' in progress · ' + missing + ' missing</span></div>' +
-      '<div class="progress" role="img" aria-label="' + done + ' of ' + rows.length + ' requirements done"><i style="width:' + Math.round(done / rows.length * 100) + '%"></i></div></section>' +
-      '<div class="list">' + rows.map(function (r) {
-        var c = r.st === 'done' ? chip('good', 'Done') : r.st === 'prog' ? chip('info', 'In progress') : chip('risk', 'Missing');
-        return '<div class="row"><div class="main"><b>' + esc(r.n) + '</b><span>' + esc(r.d) + '</span></div>' + c + '</div>';
-      }).join('') + '</div>' +
-      seatBlock +
-      '<section><div class="sec-title"><span>Audit confirmation</span></div><div class="list"><div class="row"><div class="main"><b>Confirmed by your advisor</b><span>Due by Week 3 of your final Term 1</span></div>' +
-      (auditOk ? chip('good', 'Confirmed') : chip('warn', 'Not yet')) + '</div></div></section>';
+    function requirement(r) {
+      var c = r.st === 'done' ? chip('good', 'Done') : r.st === 'prog' ? chip('info', 'In progress') : chip('risk', 'Missing');
+      return '<div class="row"><div class="main"><b>' + esc(r.n) + '</b>' + (r.st === 'done' ? '' : '<span>' + esc(r.d) + '</span>') + '</div>' + c + '</div>';
+    }
+    return '<section class="next-step"><div class="sec-title"><span>Your next step</span><span>Audit due Week 3</span></div>' + banner + seatBlock + '</section>' +
+      '<section class="section-card"><div class="sec-title"><span>Requirements</span><span>' + done + ' of ' + rows.length + ' complete</span></div>' +
+      '<div class="progress" role="img" aria-label="' + done + ' of ' + rows.length + ' requirements done"><i style="width:' + Math.round(done / rows.length * 100) + '%"></i></div>' +
+      '<div class="list active-requirements">' + rows.filter(function(r) { return r.st !== 'done'; }).sort(function(a,b) { return (a.st === 'missing' ? -1 : 0) - (b.st === 'missing' ? -1 : 0); }).map(requirement).join('') + '</div>' +
+      '<details class="completed"><summary>Completed requirements <span>' + done + '</span></summary><div class="list">' + rows.filter(function(r) { return r.st === 'done'; }).map(requirement).join('') + '</div></details></section>' +
+      '<section class="section-card"><div class="sec-title"><span>Advisor audit</span><span>Due Week 3</span></div><div class="audit-row"><b>Graduation audit</b>' +
+      (auditOk ? chip('good', 'Confirmed') : chip('warn', 'Pending')) + '</div></section>';
   }
 
   function studentCareer() {
     var intros = Object.keys(S.intros).length;
-    var out = '<section><div class="sec-title"><span>Employer matches</span><span>' + intros + ' of 3 intros requested</span></div><div class="list">' +
+    var out = '<section class="section-card employers"><div class="sec-title"><span>01 · Employer matches</span><span>' + intros + ' of 3 intros requested</span></div><div class="list">' +
       EMPLOYERS.map(function (e) {
         var on = !!S.intros[e.id];
-        return '<div class="row"><div class="main"><b>' + esc(e.name) + '</b><span>' + esc(e.meta) + '</span><div style="margin-top:6px">' + chip(e.id === 0 ? 'good' : 'info', e.tag) + '</div></div>' +
-          '<button type="button" class="btn ' + (on ? 'quiet' : 'ghost') + '" data-action="intro" data-v="' + e.id + '" aria-pressed="' + on + '">' + (on ? 'Intro requested' : 'Request intro') + '</button></div>';
+        return '<div class="row"><div class="main"><b>' + esc(e.name) + '</b><span>' + esc(e.meta) + '</span>' + (e.id === 0 ? '<span>Alumni mentor support</span>' : '') + (on ? '<span>Intro pending with SCIS</span>' : '') + '<div style="margin-top:6px">' + chip(e.id === 0 ? 'good' : 'info', e.tag) + '</div></div>' +
+          '<button type="button" class="btn ' + (on ? 'quiet' : 'ghost') + '" data-action="intro" data-v="' + e.id + '" aria-pressed="' + on + '">' + (on ? 'Cancel request' : 'Request intro') + '</button></div>';
       }).join('') + '</div></section>';
 
-    out += '<section><div class="sec-title"><span>Deadlines in one calendar</span><span>Week 3 · 2 clashes</span></div><div class="list day">' +
+    out += '<section class="section-card calendar"><div class="sec-title"><span>02 · Your deadlines</span><span>Week 3 · 2 clashes</span></div><div class="list day">' +
       WEEK3.map(function (d) {
-        return '<div class="day-h">' + d.day + '</div>' + d.items.map(function (i) {
+        return '<div class="calendar-day"><div class="day-h">' + d.day + '</div>' + d.items.map(function (i) {
           return '<div class="row"><div class="main"><b>' + esc(i.t) + '</b><span>' + esc(i.w) + '</span></div>' + chip(i.k === 'Assessment' || i.k === 'Interview' ? 'warn' : i.k === 'Capstone' ? 'info' : 'plain', i.k) + '</div>';
-        }).join('') + (d.clash ? '<div class="clash">' + esc(d.clash) + '</div>' : '');
+        }).join('') + (d.clash ? '<div class="clash">' + esc(d.clash) + (d.leave ? '<div class="actions"><button type="button" class="btn ghost" data-action="leave-clash">Request leave</button></div>' : '') + '</div>' : '') + '</div>';
       }).join('') + '</div></section>';
 
     var L = S.leave, form;
     if (!L || L.status === 'declined') {
       form = (L ? '<p>Your advisor declined the request. You can send a new one.</p>' : '') +
-        '<form id="leave-form"><label for="leave-activity">Which graded activity clashes?<select id="leave-activity"><option>Graded team presentation (IS module), Week 3 Fri 10:00</option><option>Capstone sprint demo, Week 3 Thu 14:00</option></select></label>' +
-        '<label for="leave-employer">Interview with<input type="text" id="leave-employer" value="Employer C (sample)"></label>' +
+        '<form id="leave-form"><p>Ask to reschedule a graded activity.</p><label for="leave-activity">Clashing activity<select id="leave-activity"><option>Team presentation · Fri 10:00</option><option>Capstone demo · Thu 14:00</option></select></label>' +
+        '<label for="leave-employer">Interview with<input type="text" id="leave-employer" required maxlength="120" value="Employer C (sample)"></label>' +
         '<div class="actions"><button type="submit" class="btn">Send request</button></div></form>';
     } else if (L.status === 'pending') {
-      form = '<div class="card hot"><b>Request sent</b><span>' + esc(L.activity) + '</span><div class="mono">Reply due in</div>' + clock(L.at + 48 * H) + '</div>';
+      form = '<div class="card hot"><b>Request sent</b><span>' + esc(L.activity) + '</span><span>' + esc(L.employer) + '</span><div class="mono">Reply due in</div>' + clock(L.at + 48 * H) + '</div>';
     } else {
-      form = '<div class="banner good"><h3>Approved</h3><p>Your advisor approved the interview leave for: ' + esc(L.activity) + '.</p></div>';
+      form = '<div class="banner good"><h3>Approved</h3><p>Your advisor approved the interview leave for: ' + esc(L.activity) + ' Interview: ' + esc(L.employer) + '.</p></div>';
     }
-    out += '<section><div class="sec-title"><span>Interview-leave request</span><span>Reply within 48 hours</span></div>' + form + '</section>';
+    out += '<section class="section-card" id="leave-section"><div class="sec-title"><span>03 · Interview leave</span><span>48-hour reply</span></div>' + form + '</section>';
     return out;
   }
 
@@ -373,7 +408,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
   function advisorView() {
     var pend = [];
     if (S.seat && S.seat.status === 'pending') pend.push({ k: 'seat', t: 'Reserved seat: Analytics elective', who: 'Marcus T.', at: S.seat.at });
-    if (S.leave && S.leave.status === 'pending') pend.push({ k: 'leave', t: 'Interview leave: ' + S.leave.activity, who: 'Marcus T.', at: S.leave.at });
+    if (S.leave && S.leave.status === 'pending') pend.push({ k: 'leave', t: 'Interview leave: ' + S.leave.employer + ' · ' + S.leave.activity, who: 'Marcus T.', at: S.leave.at });
     var risky = S.cohort.slice().sort(function (a, b) { return (atRisk(b) ? 1 : 0) - (atRisk(a) ? 1 : 0); });
     var toConfirm = S.cohort.filter(function (s) { return s.audit === 'unconfirmed'; }).length;
     return '<div class="kpis"><div class="kpi"><span class="v">' + pend.length + '</span><span class="l">Requests waiting</span><span class="s">48-hour clock on each</span></div>' +
@@ -409,11 +444,11 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
       '<div class="kpi"><span class="v">' + risk + '</span><span class="l">Students at risk</span><span class="s">of ' + n + ' in sample cohort</span></div>' +
       '<div class="kpi"><span class="v">' + conf + '/' + n + '</span><span class="l">Audits confirmed</span><span class="s">Target: all by Week 3</span></div>' +
       '<div class="kpi"><span class="v">' + avgTxt + '</span><span class="l">Average advisor reply</span><span class="s">Baseline about 1 week. Target 48 h.</span></div>' +
-      '<div class="kpi"><span class="v">' + Math.round(onTime / n * 100) + '%</span><span class="l">On-time graduation</span><span class="s">Projected, sample cohort</span></div></div>' +
+      '<div class="kpi"><span class="v">' + Math.round(onTime / n * 100) + '%</span><span class="l">Requirements on track</span><span class="s">No missing requirements · sample cohort</span></div></div>' +
       '<section><div class="sec-title"><span>Who owns each fix (suggested)</span></div><div class="tbl-wrap"><table><thead><tr><th>Fix</th><th>Owner</th><th>Success metric</th></tr></thead><tbody>' +
       '<tr><td>Audit confirmed by Week 3</td><td>Registrar and advisors</td><td>% audits confirmed by Week 3</td></tr>' +
       '<tr><td>Reserved seats for graduating students</td><td>Registrar</td><td>Students blocked by a full module</td></tr>' +
-      '<tr><td>Interview-leave form, 48-hour reply</td><td>Career centre and faculty</td><td>Median reply time</td></tr>' +
+      '<tr><td>Interview-leave form, 48-hour reply</td><td>Career centre and faculty</td><td>Average reply time</td></tr>' +
       '<tr><td>Hiring sponsors and alumni mentors</td><td>Capstone office</td><td>Interview invites from showcases</td></tr>' +
       '</tbody></table></div></section>';
   }
@@ -421,7 +456,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
   /* ---------- Render ---------- */
   function render() {
     var key = S.role === 'student' ? 'student-' + S.tab : S.role;
-    var who = S.role === 'student' ? 'Marcus Tan · Year 4 · Information Systems' : S.role === 'advisor' ? 'Academic advisor · Week 2 of Term 1' : 'SCIS management · sample cohort';
+    var who = S.role === 'student' ? 'Marcus · Year 4 / T1 / W1' : S.role === 'advisor' ? 'Academic advisor · Term 1 · Week 1' : 'SCIS management · sample cohort';
     var title = S.role === 'student' ? (S.tab === 'grad' ? 'Graduation' : 'Career') : S.role === 'advisor' ? 'Advisor inbox' : 'Programme health';
     var tabs = S.role === 'student'
       ? '<div class="tabs" role="tablist" aria-label="Sections">' +
@@ -435,11 +470,12 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     document.querySelectorAll('[data-action="device"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === (phoneMode ? 'phone' : 'wide'))); });
 
     var N = NOTES[key];
-    document.getElementById('notes').innerHTML = '<h2>' + esc(N.title) + '</h2>' +
+    document.getElementById('notes').innerHTML = '<details class="presenter-details"><summary>Presenter guide & demo controls</summary><div class="presenter-content"><h2>' + esc(N.title) + '</h2>' +
       N.pairs.map(function (p) { return '<div class="pair"><b>' + esc(p[0]) + '</b><small>' + esc(p[1]) + '</small></div>'; }).join('') +
       '<div class="pair"><b>Metric it gives us</b><small>' + esc(N.metric) + '</small></div>' +
+      '<div class="pair"><b>Demo path · about 30 seconds</b><small>Student: request seat → Advisor: approve seat, then confirm Marcus’s audit → Management: show updated metrics → Student Career: show interview clash.</small></div>' +
       '<p class="pitch">Grad Ready gets Marcus through both of his biggest risks: not graduating, and not getting hired.</p>' +
-      '<div class="demo"><button type="button" class="btn quiet" data-action="skip">Skip 24 hours (demo)</button><button type="button" class="btn quiet" data-action="reset">Reset demo</button></div>';
+      '<div class="demo"><button type="button" class="btn quiet" data-action="skip">Skip 24 hours (demo)</button><button type="button" class="btn quiet" data-action="reset">Reset demo</button></div></div></details>';
 
     document.querySelectorAll('[data-action="role"]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === S.role)); });
     tick();
@@ -471,13 +507,19 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     if (a === 'role') { S.role = v; }
     else if (a === 'device') { S.device = v; }
     else if (a === 'tab') { S.tab = v; }
-    else if (a === 'seat-request') { S.seat = { at: now(), status: 'pending' }; say('Seat request sent to your advisor.'); }
+    else if (a === 'seat-request') { S.seat = { at: now(), status: 'pending' }; say('Seat request pending.'); }
+    else if (a === 'leave-clash') {
+      var form = document.getElementById('leave-form');
+      if (form) { document.getElementById('leave-activity').selectedIndex = 0; form.scrollIntoView({ block: 'center' }); document.getElementById('leave-employer').focus({ preventScroll: true }); }
+      else { document.getElementById('leave-section').scrollIntoView({ block: 'center' }); say('Your interview-leave request is already ' + S.leave.status + '.'); }
+      return;
+    }
     else if (a === 'intro') { if (S.intros[v]) { delete S.intros[v]; say('Intro cancelled.'); } else { S.intros[v] = true; say('Intro requested. SCIS will reach out.'); } }
     else if (a === 'confirm') { var s = S.cohort.filter(function (x) { return x.id === v; })[0]; if (s) s.audit = 'confirmed'; say('Audit confirmed.'); }
     else if (a === 'approve') {
       if (v === 'seat' && S.seat) { S.seat.status = 'approved'; reply(S.seat.at); marcus().missing = false; }
       if (v === 'leave' && S.leave) { S.leave.status = 'approved'; reply(S.leave.at); }
-      say('Request approved.');
+      say(v === 'seat' && marcus().audit !== 'confirmed' ? 'Seat approved. Confirm Marcus’s audit next.' : 'Request approved.');
     }
     else if (a === 'decline') {
       if (v === 'seat' && S.seat) { S.seat.status = 'declined'; reply(S.seat.at); }
@@ -495,7 +537,7 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
     if (e.target.id !== 'leave-form') return;
     e.preventDefault();
     var act = document.getElementById('leave-activity').value;
-    S.leave = { at: now(), status: 'pending', activity: act };
+    S.leave = { at: now(), status: 'pending', activity: act, employer: document.getElementById('leave-employer').value.trim() || 'Employer C (sample)' };
     say('Interview-leave request sent. Reply due within 48 hours.');
     render();
   });
@@ -503,3 +545,5 @@ thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: 
   render();
 })();
 </script>
+
+</html>

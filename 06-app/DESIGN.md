@@ -6,38 +6,28 @@ We borrowed structure and principles from the Notion, Stripe and Airbnb files. W
 
 ## Overview
 
-Grad Ready is for a stressed Year 4 student, Marcus, who wants answers in one place and no surprises. The look is calm, flat and clear. Every alarming message comes with a next step.
-
-- **One accent.** Teal is used for the main action and active states only, like Airbnb's single accent. Everything else is white, ink and soft tints.
-- **Flat with hairlines.** Cards are white with a 1px border, as in Notion. Only floating things (toast, hot card, phone frame) get a shadow, and there is one shadow level.
-- **Numbers line up.** Counts, clocks and percentages use tabular figures, as in Stripe's money cells.
-- **Never pure black.** Text is a navy-tinted ink, as in Stripe and Airbnb.
+Grad Ready helps Marcus manage graduation and hiring deadlines. Use a white, practical interface with charcoal actions, light grey borders and restrained status colours. Keep the app light even when the operating system uses dark mode.
 
 ## Colours
 
-| Role | Light | Dark | Use |
-|---|---|---|---|
-| Accent | `#0b6e6e` | `#4fc9c4` | Primary button, active tab, links. Nothing else |
-| Accent soft | `#d8eeed` | `#123a3b` | Active tab fill, info chips, header band |
-| Ink | `#16212b` | `#e8eef2` | Headings and body text |
-| Muted | `#55656f` | `#9bafbc` | Secondary text, captions |
-| Line | `#d6dde2` | `#2a3945` | 1px borders and dividers |
-| Surface | `#ffffff` | `#16202a` | Cards and panels |
-| Surface 2 | `#f4f6f7` | `#1c2833` | Table heads, quiet fills |
-| Page | `#eceff1` | `#0e151b` | App background |
-| Good / soft | `#1d7547` / `#def2e6` | | Done, on track |
-| Warn / soft | `#85560a` / `#fcefcf` | | Needs attention |
-| Risk / soft | `#b3261e` / `#fbe2df` | | Missing, at risk, overdue |
-| Cream | `#f7f1e3` | | Warm highlight for the "next step" card (poster and slides too) |
+| Role | Colour | Use |
+|---|---|---|
+| Page / surface | `#ffffff` | Background, cards and headers |
+| Surface 2 | `#f7f7f7` | Quiet fills and table headings |
+| Ink | `#242424` | Headings and body |
+| Muted | `#666666` | Secondary text |
+| Line | `#e3e3e3` | Borders and dividers |
+| Action | `#303030` | Primary buttons and active controls |
+| Action soft | `#f1f1f1` | Selected tabs and neutral chips |
+| Good / soft | `#1d7547` / `#f4f8f5` | Done and on track |
+| Warn / soft | `#85560a` / `#fbf8f0` | Needs attention |
+| Risk / soft | `#b3261e` / `#fcf5f4` | Missing and overdue |
 
-Rules:
-- Teal is never used for body text or for large backgrounds. The dark poster ground is the one exception.
-- Good, warn and risk always come with a word or icon, never colour alone.
-- Risk red is a different red from the accent. Do not use the accent for errors.
+Use status words alongside colour. Headers stay white; avoid gradients and large tinted panels.
 
 ## Typography
 
-- **Headings:** Bricolage Grotesque, 600 to 700, line-height 1.1 to 1.2, slight negative letter-spacing (about -0.01em).
+- **Headings:** IBM Plex Sans, 600 to 700, line-height 1.1 to 1.2, slight negative letter-spacing (about -0.01em).
 - **Body:** IBM Plex Sans, 400 and 500, line-height 1.5.
 - **Numbers and clocks:** IBM Plex Mono 500, tabular figures.
 
@@ -61,11 +51,11 @@ Posters scale the same families up: headline 100px (square) or 148px (landscape)
 
 ## Components
 
-- **Primary button:** teal fill, white text, 8px radius, 44px high. One per screen area.
-- **Secondary:** ghost (teal outline) or quiet (grey fill). **Destructive:** red outline.
+- **Primary button:** charcoal fill, white text, 8px radius, 44px high. One per screen area.
+- **Secondary:** ghost (charcoal outline) or quiet (grey fill). **Destructive:** red outline.
 - **Banner:** soft tint, 4px left bar in the status colour, a short title, one sentence, then the action button.
 - **Chip:** soft tint with a dot, e.g. Done, In progress, Missing.
-- **Card:** white, 1px line, 12px radius. The "hot" card gets a teal border and the shadow.
+- **Card:** white, 1px line, 12px radius. The "hot" card gets a charcoal border and the shadow.
 - **Progress bar:** 10px, rounded, green fill.
 - **Table:** turns into cards under 600px.
 - **Countdown clock:** mono, large, turns red and says "Overdue" when late.
@@ -84,7 +74,7 @@ Plain, short, reassuring. Say what is wrong, then what to do next.
 
 ## Don't
 
-- Add a second accent colour.
+- Add decorative accent colours.
 - Use pill-shaped primary buttons (chips and tabs can be pills).
 - Stack several shadows or heavy drop shadows.
 - Put text on a photo without a dark overlay.
@@ -96,7 +86,12 @@ Plain, short, reassuring. Say what is wrong, then what to do next.
 
 ## Posters
 
-- Same teal, ink and fonts. Dark teal ground `#0c4a4a`, white cards, one warm highlight line in `#f0c15a`.
-- Headline, three benefits, one call to action with a QR code. Nothing else.
-- Sizes: square 1080×1080 (Telegram), landscape 1920×1080 (screens), vertical 1080×1920 (story, optional).
+Match the white background, charcoal type and IBM Plex fonts. Use status colour only when it communicates meaning.
+
+- Headline, three benefits, one call to action with a QR code.
+- Sizes: square 1080×1080 (Telegram), landscape 1920×1080 (screens), vertical 1080×1920 (optional).
 - Every poster needs the real QR code and launch details before it goes out.
+
+## Phone content hierarchy
+
+Use short action-led copy and separate bordered cards for each task. Show missing requirements first; keep completed items in an expandable group. Career uses three numbered sections and individual day cards. Presenter guidance stays in an expandable panel outside the student screens. Inputs use at least 16px type on mobile.
