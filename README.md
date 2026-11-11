@@ -6,21 +6,21 @@ Everything on screen is **sample data** and says so.
 
 ## Run it
 
-Open `06-app/index.html` in a browser by double-clicking it in Finder. No installation or build step is needed. Google Fonts loads online; system fonts are used as a fallback.
+Open the live demo at https://nixonwong48.github.io/mcra_app/, or download `index.html` and double-click it. No installation or build step is needed. Google Fonts loads online; system fonts are used as a fallback.
 
 Start in **Student → Graduation**, click **Request seat**, then switch to **Advisor** to approve it and confirm Marcus’s audit. Check **Management** for updated metrics, then explore **Student → Career**.
 
 The interface uses white surfaces, charcoal actions and a phone-friendly card layout. Expand **Presenter guide & demo controls** beside or below the app to skip 24 hours or reset. Refreshing also resets all sample data.
 
-See [the app guide](06-app/README.md) for the full demo and presentation checklist.
+See [the app guide](GUIDE.md) for the full demo and presentation checklist.
 
 ## Where things are
 
 | File | What it is |
 |---|---|
-| `06-app/index.html` | The whole prototype (single file) |
-| `06-app/DESIGN.md` | Colours, type, components and tone, so the app, posters and slides match |
-| `06-app/README.md` | What each view does, and what is left to do |
+| `index.html` | The whole prototype (single file) |
+| `DESIGN.md` | Colours, type, components and tone, so the app, posters and slides match |
+| `GUIDE.md` | What each view does, demo steps and presentation checklist |
 
 ## Working rules
 
