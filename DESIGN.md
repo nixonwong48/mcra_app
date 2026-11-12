@@ -1,97 +1,56 @@
 # Grad Ready: DESIGN.md
 
-One spec for the app, the posters and the slides, so they look like the same product.
-Format follows the DESIGN.md idea from [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) (MIT).
-We borrowed structure and principles from the Notion, Stripe and Airbnb files. We did not borrow their colours, fonts or logos.
+One spec for the app, the posters and the slides, so they look like the same product and match the class deck (SMU-style navy and indigo).
 
 ## Overview
 
-Grad Ready helps Marcus manage graduation and hiring deadlines. Use a white, practical interface with charcoal actions, light grey borders and restrained status colours. Keep the app light even when the operating system uses dark mode.
+Grad Ready helps Marcus manage graduation and hiring deadlines. The look is clean and lively: off-white surfaces, a navy header band, filled navy buttons, indigo highlights and one yellow accent word per headline. Every warning comes with a next step.
 
 ## Colours
 
-| Role | Colour | Use |
+| Role | Value | Use |
 |---|---|---|
-| Page / surface | `#ffffff` | Background, cards and headers |
-| Surface 2 | `#f7f7f7` | Quiet fills and table headings |
-| Ink | `#242424` | Headings and body |
-| Muted | `#666666` | Secondary text |
-| Line | `#e3e3e3` | Borders and dividers |
-| Action | `#303030` | Primary buttons and active controls |
-| Action soft | `#f1f1f1` | Selected tabs and neutral chips |
-| Good / soft | `#1d7547` / `#f4f8f5` | Done and on track |
-| Warn / soft | `#85560a` / `#fbf8f0` | Needs attention |
-| Risk / soft | `#b3261e` / `#fcf5f4` | Missing and overdue |
+| Navy (primary) | `#151c55` | Header band, primary buttons, selected segment, headings |
+| Indigo (brand) | `#3347b0` | Logo tile, selected tab text, info chips, links |
+| Yellow (accent) | `#f2c14e` | One highlighted word in a headline. Nothing else |
+| Ink | `#1b2150` | Body text |
+| Muted | `#5a6070` | Secondary text |
+| Page | `#f7f7f5` | Background |
+| Surface | `#ffffff` | Cards |
+| Surface 2 | `#f2f4fa` | Table heads, progress track |
+| Line | `#e1e4ee` | 1px borders |
+| Soft indigo | `#e8ecf8` | Active tab, info chip |
+| Good / soft | `#1d7547` / `#def2e6` | Done, on track |
+| Warn / soft | `#85560a` / `#fcefcf` | Needs attention |
+| Risk / soft | `#b3261e` / `#fbe2df` | Missing, clash, overdue |
 
-Use status words alongside colour. Headers stay white; avoid gradients and large tinted panels.
+Rules: status colours always come with a word (Done, In progress, Missing). Risk red is only for problems. Yellow is only for the highlighted headline word.
 
 ## Typography
 
-- **Headings:** IBM Plex Sans, 600 to 700, line-height 1.1 to 1.2, slight negative letter-spacing (about -0.01em).
-- **Body:** IBM Plex Sans, 400 and 500, line-height 1.5.
-- **Numbers and clocks:** IBM Plex Mono 500, tabular figures.
-
-| Level | Size | Weight |
-|---|---|---|
-| Screen title | 24px | 700 |
-| Section title | 15 to 17px | 600 |
-| Body | 15px | 400 |
-| Secondary | 13 to 13.5px | 400 |
-| Chip, label | 12.5px | 600 |
-| Big number | 28 to 30px | 500 mono |
-
-Posters scale the same families up: headline 100px (square) or 148px (landscape), benefits 34 to 36px.
+IBM Plex Sans for text, IBM Plex Mono for clocks and numbers (tabular figures). The posters use Inter to match the deck.
+Screen title 26px bold, section title 15px semibold, body 15px, secondary 13px, chips 12.5px semibold.
 
 ## Shape and space
 
-- Spacing steps of 4px; common gaps 8, 12, 16, 18.
-- Radius: buttons 8px, inputs 9px, cards and lists 12px, panels 16px, chips pill-shaped, phone frame 42px.
-- Shadow, one level: `0 1px 2px rgba(15,23,32,.04), 0 4px 12px rgba(15,23,32,.06)`.
-- Touch targets at least 44px high.
+Radius: buttons 8px, cards 12 to 14px, phone frame 42px, chips pill. Spacing in steps of 4px. One soft shadow level. Touch targets at least 44px.
 
 ## Components
 
-- **Primary button:** charcoal fill, white text, 8px radius, 44px high. One per screen area.
-- **Secondary:** ghost (charcoal outline) or quiet (grey fill). **Destructive:** red outline.
-- **Banner:** soft tint, 4px left bar in the status colour, a short title, one sentence, then the action button.
-- **Chip:** soft tint with a dot, e.g. Done, In progress, Missing.
-- **Card:** white, 1px line, 12px radius. The "hot" card gets a charcoal border and the shadow.
-- **Progress bar:** 10px, rounded, green fill.
-- **Table:** turns into cards under 600px.
-- **Countdown clock:** mono, large, turns red and says "Overdue" when late.
+- **Header band:** navy, with the Grad Ready mark, the view name in small caps, a headline with one yellow word, and the student line.
+- **Primary button:** navy fill, white text, 8px radius. **Ghost:** navy outline. **Danger:** red outline.
+- **Banner:** soft status tint with a 4px bar on the left, a short title, one sentence, then the action.
+- **Calendar day with a clash:** navy 1.5px border, red clash strip, "Request leave" button.
+- **Progress bar:** 10px, green fill.
 
 ## Voice
 
-Plain, short, reassuring. Say what is wrong, then what to do next.
-- Yes: "1 requirement missing. Request a reserved seat."
-- No: "Critical error: graduation at risk!"
-
-## Do
-
-- Show the one thing the student must do next, with a button.
-- Keep status words consistent: Done, In progress, Missing.
-- Keep sample data labelled as sample.
-
-## Don't
-
-- Add decorative accent colours.
-- Use pill-shaped primary buttons (chips and tabs can be pills).
-- Stack several shadows or heavy drop shadows.
-- Put text on a photo without a dark overlay.
+Plain, short, reassuring: say what is wrong, then what to do next.
 
 ## Responsive
 
-- Phone first. On 960px and wider, the app starts in a phone frame with presenter notes beside it. The Phone/Laptop selection persists across all roles and demo resets.
-- Lists and tables never get a fixed height that can squash their content.
+Phone first. On wide screens the app can sit in a phone frame next to the presenter guide; the Phone/Laptop switch overrides it. Lists never get a fixed height that squashes their content.
 
 ## Posters
 
-Match the white background, charcoal type and IBM Plex fonts. Use status colour only when it communicates meaning.
-
-- Headline, three benefits, one call to action with a QR code.
-- Sizes: square 1080×1080 (Telegram), landscape 1920×1080 (screens), vertical 1080×1920 (optional).
-- Every poster needs the real QR code and launch details before it goes out.
-
-## Phone content hierarchy
-
-Use short action-led copy and separate bordered cards for each task. Show missing requirements first; keep completed items in an expandable group. Career uses three numbered sections and individual day cards. Presenter guidance stays in an expandable panel outside the student screens. Inputs use at least 16px type on mobile.
+Same navy, indigo and yellow, Inter type. Headline, three benefits (ONE PAGE, WEEK 3, 48 HOURS), a QR code and "Sample data". The posters live in the team's design canvas, not in this repo.
