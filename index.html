@@ -204,6 +204,24 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
   .foot { font-size: 11px; }
   input[type="text"], select { font-size: 16px; min-height: 44px; }
 }
+
+/* Extras: request tracker, policy note, portfolio, share, reminders */
+.tracker { list-style: none; margin: 4px 0 0; padding: 0; display: flex; gap: 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.tracker li { flex: 1; position: relative; padding-top: 18px; text-align: center; }
+.tracker li::before { content: ""; position: absolute; top: 3px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--line); z-index: 1; }
+.tracker li::after { content: ""; position: absolute; top: 7px; left: -50%; width: 100%; height: 2px; background: var(--line); }
+.tracker li:first-child::after { display: none; }
+.tracker li.done { color: var(--good); } .tracker li.done::before, .tracker li.done::after { background: var(--good); }
+.tracker li.now { color: var(--brand); } .tracker li.now::before { background: var(--brand); box-shadow: 0 0 0 4px var(--accent-soft); } .tracker li.now::after { background: var(--good); }
+.tracker li.bad { color: var(--risk); } .tracker li.bad::before { background: var(--risk); } .tracker li.bad::after { background: var(--good); }
+.policy { background: var(--accent-soft); color: var(--accent); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; margin-bottom: 12px; }
+.note { color: var(--good); font-weight: 600; font-size: 13.5px; margin-top: 10px; }
+.countdown-days { display: grid; gap: 6px; }
+.countdown-days .progress { margin-top: 0; }
+.countdown-days .progress i { background: var(--brand); }
+.share-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.share-row p { flex: 1 1 180px; font-size: 14px; }
+.portfolio-link { font-family: var(--font-mono); font-size: 13px; background: var(--surface-2); border-radius: 8px; padding: 8px 10px; word-break: break-all; }
 </style>
 
 <div class="shell">
@@ -246,7 +264,7 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
 
   function fresh() {
     return {
-      role: 'student', tab: 'grad', device: 'phone', seat: null, leave: null, replies: [], intros: {},
+      role: 'student', tab: 'grad', device: 'phone', seat: null, leave: null, replies: [], intros: {}, portfolio: false, remind: false,
       cohort: [
         { id: 'marcus', name: 'Marcus T.', note: 'Demo student', audit: 'unconfirmed', missing: true },
         { id: 'b', name: 'Student B', note: 'Year 4, IS', audit: 'confirmed', missing: false },
@@ -313,6 +331,24 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
     }
   };
 
+  function tracker(status) {
+    var labels = ['Sent', 'Advisor reviewing', 'Decision'];
+    var html = '<ol class="tracker" aria-label="Request status">';
+    labels.forEach(function (l, i) {
+      var cls = '', txt = l;
+      if (status === 'pending') cls = i < 1 ? 'done' : i === 1 ? 'now' : '';
+      else if (status === 'approved') { cls = 'done'; if (i === 2) txt = 'Approved'; }
+      else if (status === 'declined') { cls = i < 2 ? 'done' : 'bad'; if (i === 2) txt = 'Declined'; }
+      html += '<li class="' + cls + '">' + esc(txt) + '</li>';
+    });
+    return html + '</ol>';
+  }
+  function daysLeft() { return Math.max(0, 14 - Math.floor(skip / (24 * H))); }
+  function copyText(txt, msg) {
+    try { navigator.clipboard.writeText(txt).then(function () { say(msg); }, function () { say('Copy this link: ' + txt); }); }
+    catch (err) { say('Copy this link: ' + txt); }
+  }
+
   function chip(kind, text) { return '<span class="chip ' + kind + '">' + esc(text) + '</span>'; }
 
   function clock(deadline) {
@@ -352,8 +388,11 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
     } else if (missing) {
       banner = '<div class="banner warn"><h3>Audit confirmed · 1 module missing</h3><p>Reserve your Analytics elective seat.</p></div>';
     } else {
-      banner = '<div class="banner good"><h3>On track to graduate</h3><p>Audit confirmed. No missing requirements.</p></div>';
+      banner = '<div class="banner good"><h3>On track to graduate</h3><p>Audit confirmed. Nothing left to do this term. Next up: your capstone showcase.</p></div>';
     }
+    var days = daysLeft();
+    var remindBanner = (S.remind && !auditOk && days <= 7)
+      ? '<div class="banner warn"><h3>Reminder: audit due in ' + days + ' day' + (days === 1 ? '' : 's') + '</h3><p>Check your requirements and ask your advisor to confirm your audit.</p></div>' : '';
     var canAsk = missing && (!S.seat || S.seat.status === 'declined');
     if (canAsk) {
       banner = banner.replace(/<\/div>$/, '<div class="actions"><button type="button" class="btn" data-action="seat-request">Request seat</button></div></div>');
@@ -363,20 +402,25 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
       if (S.seat && S.seat.status === 'declined') {
         seatBlock = '<p>Meet your advisor, then request again.</p>';
       } else if (!canAsk) {
-        seatBlock = '<div class="card hot"><div><b>Seat request pending</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + '</div>';
+        seatBlock = '<div class="card hot"><div><b>Seat request pending</b></div><div class="mono">Reply due in</div>' + clock(S.seat.at + 48 * H) + tracker('pending') + '</div>';
       }
+    } else if (S.seat && S.seat.status === 'approved') {
+      seatBlock = '<div class="card"><div><b>Seat request approved</b></div>' + tracker('approved') + '</div>';
     }
+    var timeline = '<div class="countdown-days"><div class="audit-row"><b>' + (days ? 'Audit due in ' + days + ' days' : 'Audit due now') + '</b>' + chip(days <= 7 ? 'warn' : 'info', 'Week 1 of 3') + '</div><div class="progress" role="img" aria-label="' + (14 - days) + ' of 14 days used"><i style="width:' + Math.round((14 - days) / 14 * 100) + '%"></i></div></div>';
     function requirement(r) {
       var c = r.st === 'done' ? chip('good', 'Done') : r.st === 'prog' ? chip('info', 'In progress') : chip('risk', 'Missing');
       return '<div class="row"><div class="main"><b>' + esc(r.n) + '</b>' + (r.st === 'done' ? '' : '<span>' + esc(r.d) + '</span>') + '</div>' + c + '</div>';
     }
-    return '<section class="next-step"><div class="sec-title"><span>Your next step</span><span>Audit due Week 3</span></div>' + banner + seatBlock + '</section>' +
+    return '<section class="next-step"><div class="sec-title"><span>Your next step</span><span>Audit due Week 3</span></div>' + remindBanner + banner + seatBlock + '</section>' +
       '<section class="section-card"><div class="sec-title"><span>Requirements</span><span>' + done + ' of ' + rows.length + ' complete</span></div>' +
       '<div class="progress" role="img" aria-label="' + done + ' of ' + rows.length + ' requirements done"><i style="width:' + Math.round(done / rows.length * 100) + '%"></i></div>' +
       '<div class="list active-requirements">' + rows.filter(function(r) { return r.st !== 'done'; }).sort(function(a,b) { return (a.st === 'missing' ? -1 : 0) - (b.st === 'missing' ? -1 : 0); }).map(requirement).join('') + '</div>' +
       '<details class="completed"><summary>Completed requirements <span>' + done + '</span></summary><div class="list">' + rows.filter(function(r) { return r.st === 'done'; }).map(requirement).join('') + '</div></details></section>' +
       '<section class="section-card"><div class="sec-title"><span>Advisor audit</span><span>Due Week 3</span></div><div class="audit-row"><b>Graduation audit</b>' +
-      (auditOk ? chip('good', 'Confirmed') : chip('warn', 'Pending')) + '</div></section>';
+      (auditOk ? chip('good', 'Confirmed') : chip('warn', 'Pending')) + '</div>' + (auditOk ? '' : '<div style="margin-top:12px">' + timeline + '</div>') +
+      (auditOk ? '' : '<div class="actions" style="margin-top:12px"><button type="button" class="btn ' + (S.remind ? 'quiet' : 'ghost') + '" data-action="remind" aria-pressed="' + !!S.remind + '">' + (S.remind ? 'Reminder on · 7 days before' : 'Remind me before Week 3') + '</button></div>') + '</section>' +
+      '<section class="section-card"><div class="share-row"><p><b>Know a Year 4 who needs this?</b><br><span style="color:var(--muted)">Share Grad Ready with a friend.</span></p><button type="button" class="btn ghost" data-action="share">Copy link</button></div></section>';
   }
 
   function studentCareer() {
@@ -386,7 +430,7 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
         var on = !!S.intros[e.id];
         return '<div class="row"><div class="main"><b>' + esc(e.name) + '</b><span>' + esc(e.meta) + '</span>' + (e.id === 0 ? '<span>Alumni mentor support</span>' : '') + (on ? '<span>Intro pending with SCIS</span>' : '') + '<div style="margin-top:6px">' + chip(e.id === 0 ? 'good' : 'info', e.tag) + '</div></div>' +
           '<button type="button" class="btn ' + (on ? 'quiet' : 'ghost') + '" data-action="intro" data-v="' + e.id + '" aria-pressed="' + on + '">' + (on ? 'Cancel request' : 'Request intro') + '</button></div>';
-      }).join('') + '</div></section>';
+      }).join('') + '</div>' + (intros === 3 ? '<p class="note">All 3 intros requested. SCIS will reach out.</p>' : '') + '</section>';
 
     out += '<section class="section-card calendar"><div class="sec-title"><span>02 · Your deadlines</span><span>Week 3 · 2 clashes</span></div><div class="list day">' +
       WEEK3.map(function (d) {
@@ -397,16 +441,20 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
 
     var L = S.leave, form;
     if (!L || L.status === 'declined') {
-      form = (L ? '<p>Your advisor declined the request. You can send a new one.</p>' : '') +
-        '<form id="leave-form"><p>Ask to reschedule a graded activity.</p><label for="leave-activity">Clashing activity<select id="leave-activity"><option>Team presentation · Fri 10:00</option><option>Capstone demo · Thu 14:00</option></select></label>' +
-        '<label for="leave-employer">Interview with<input type="text" id="leave-employer" required maxlength="120" value="Employer C (sample)"></label>' +
+      form = (L ? '<p>Your advisor declined the request. You can send a new one.</p>' + tracker('declined') : '') +
+        '<form id="leave-form"><p>Ask to reschedule a graded activity or an online assessment.</p><label for="leave-activity">Clashing activity<select id="leave-activity"><option>Team presentation · Fri 10:00</option><option>Capstone demo · Thu 14:00</option><option>Online assessment · Thu due 23:59 (reschedule)</option></select></label>' +
+        '<label for="leave-employer">Employer<input type="text" id="leave-employer" required maxlength="120" value="Employer C (sample)"></label>' +
         '<div class="actions"><button type="submit" class="btn">Send request</button></div></form>';
     } else if (L.status === 'pending') {
-      form = '<div class="card hot"><b>Request sent</b><span>' + esc(L.activity) + '</span><span>' + esc(L.employer) + '</span><div class="mono">Reply due in</div>' + clock(L.at + 48 * H) + '</div>';
+      form = '<div class="card hot"><b>Request sent</b><span>' + esc(L.activity) + '</span><span>' + esc(L.employer) + '</span><div class="mono">Reply due in</div>' + clock(L.at + 48 * H) + tracker('pending') + '</div>';
     } else {
-      form = '<div class="banner good"><h3>Approved</h3><p>Your advisor approved the interview leave for: ' + esc(L.activity) + ' Interview: ' + esc(L.employer) + '.</p></div>';
+      form = '<div class="banner good"><h3>Approved</h3><p>Your advisor approved the request for: ' + esc(L.activity) + ' Employer: ' + esc(L.employer) + '.</p>' + tracker('approved') + '</div>';
     }
-    out += '<section class="section-card" id="leave-section"><div class="sec-title"><span>03 · Interview leave</span><span>48-hour reply</span></div>' + form + '</section>';
+    out += '<section class="section-card" id="leave-section"><div class="sec-title"><span>03 · Interview leave</span><span>48-hour reply</span></div><p class="policy"><b>Proposed SCIS rule:</b> raise an interview clash here, and your advisor replies within 48 hours.</p>' + form + '</section>';
+    // Capstone portfolio
+    out += '<section class="section-card"><div class="sec-title"><span>04 · Capstone portfolio</span><span>Showcase this term</span></div>' +
+      (S.portfolio ? '<p>Your one-page portfolio is ready to share with recruiters (sample link).</p><div class="portfolio-link" style="margin:10px 0">gradready.example/portfolio/marcus-tan</div><div class="actions"><button type="button" class="btn ghost" data-action="copy-portfolio">Copy link</button></div>'
+        : '<p>Turn your capstone into a one-page portfolio recruiters can open.</p><div class="actions" style="margin-top:10px"><button type="button" class="btn" data-action="portfolio">Create portfolio link</button></div>') + '</section>';
     return out;
   }
 
@@ -414,7 +462,7 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
   function advisorView() {
     var pend = [];
     if (S.seat && S.seat.status === 'pending') pend.push({ k: 'seat', t: 'Reserved seat: Analytics elective', who: 'Marcus T.', at: S.seat.at });
-    if (S.leave && S.leave.status === 'pending') pend.push({ k: 'leave', t: 'Interview leave: ' + S.leave.employer + ' · ' + S.leave.activity, who: 'Marcus T.', at: S.leave.at });
+    if (S.leave && S.leave.status === 'pending') pend.push({ k: 'leave', t: (S.leave.activity.indexOf('Online assessment') === 0 ? 'Reschedule assessment: ' : 'Interview leave: ') + S.leave.employer + ' · ' + S.leave.activity, who: 'Marcus T.', at: S.leave.at });
     var risky = S.cohort.slice().sort(function (a, b) { return (atRisk(b) ? 1 : 0) - (atRisk(a) ? 1 : 0); });
     var toConfirm = S.cohort.filter(function (s) { return s.audit === 'unconfirmed'; }).length;
     return '<div class="kpis"><div class="kpi"><span class="v">' + pend.length + '</span><span class="l">Requests waiting</span><span class="s">48-hour clock on each</span></div>' +
@@ -533,6 +581,10 @@ summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-weight: 600; 
       if (v === 'leave' && S.leave) { S.leave.status = 'declined'; reply(S.leave.at); }
       say('Request declined.');
     }
+    else if (a === 'portfolio') { S.portfolio = true; say('Portfolio link created (sample).'); }
+    else if (a === 'copy-portfolio') { copyText('gradready.example/portfolio/marcus-tan', 'Portfolio link copied (sample).'); }
+    else if (a === 'share') { copyText(location.href.split('#')[0], 'Link copied. Send it to a friend.'); }
+    else if (a === 'remind') { S.remind = !S.remind; say(S.remind ? 'Reminder on. We will nudge you 7 days before Week 3.' : 'Reminder off.'); }
     else if (a === 'skip') { skip += 24 * H; }
     else if (a === 'reset') { var r = S.role, tb = S.tab, dv = S.device; S = fresh(); S.role = r; S.tab = tb; S.device = dv; skip = 0; say('Demo reset.'); }
     render();
